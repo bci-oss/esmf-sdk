@@ -1,0 +1,29 @@
+#
+# Aspect model for process categories
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.process:0.0.1#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProcessCategories
+    a                  bamm:Aspect ;
+    bamm:name          "ProcessCategories" ;
+    bamm:preferredName "Process Categories"@en ;
+    bamm:description   "Aspect for process categories."@en ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Process Category List"@en ;
+    bamm:description    "A list of process categories."@en ;
+    bamm:characteristic [
+                            a bamm-c:SortedSet ;
+                            bamm:name "ProcessCategories" ;
+                            bamm:dataType :ProcessCategory
+                        ] .

@@ -1,0 +1,305 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.instance:0.1.0#>.
+@prefix type: <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#>.
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:ProcessedPart a samm:Entity ;
+    samm:preferredName "ProcessedPart"@en ;
+    samm:preferredName "Verarbeites Teil"@de ;
+    samm:description "Definition of a part processed in manufacturing."@en ;
+    samm:properties ( :processedPartId
+                      :parentProcessedPartRef
+                      [ samm:property :serialNumber; samm:optional true ]
+                      :productionTime
+                      :resultState
+                      :partType
+                      type:materialNumber
+                      [ samm:property type:materialDescription; samm:optional true ]
+                      type:materialClass
+                      [ samm:property type:materialClassDescription; samm:optional true ]
+                      [ samm:property :batchNumber; samm:optional true ]
+                      [ samm:property :isAssembledFrom; samm:optional true ] ) .
+
+:processedPartId a samm:Property ;
+    samm:preferredName "Processed Part ID"@en ;
+    samm:preferredName "Teilenummer"@de ;
+    samm:description "The identification of the processed part based on the MES part number."@en ;
+    samm:exampleValue "F03Z1234560213107000283011234567990" ;
+    samm:characteristic :PartNumber .
+
+:parentProcessedPartRef a samm:Property ;
+    samm:preferredName "Parent Processed Part Reference"@en ;
+    samm:description "Reference to process part where the part has been built into"@en ;
+    samm:characteristic [
+        a samm-c:SingleEntity ;
+        samm:dataType :ProcessedPartReference
+    ] .
+
+:ProcessedPartReference a samm:Entity ;
+    samm:preferredName "Parent Processed Part Reference"@en ;
+    samm:description "Reference to process part where the part has been built into"@en ;
+    samm:properties ( :processedPartId type:materialNumber ) .
+
+:PartNumber a samm-c:Trait ;
+    samm:see <https://inside-docupedia.bosch.com/confluence/x/ssq0O> ;
+    samm-c:baseCharacteristic [
+        a samm-c:Code ;
+        samm:preferredName "Part Number"@en ;
+        samm:dataType xsd:string
+    ] ;
+    samm-c:constraint [
+        a samm-c:RegularExpressionConstraint ;
+        samm:value "[A-Z0-9-]{22,68}"
+    ] .
+
+:SerialNumber a samm-c:Trait ;
+    samm-c:baseCharacteristic [
+        a samm-c:Code ;
+        samm:preferredName "Serial Number"@en ;
+        samm:dataType xsd:string
+    ] ;
+    samm-c:constraint [
+        a samm-c:RegularExpressionConstraint ;
+        samm:value "[A-Z0-9]{10,12}"
+    ] .
+
+:serialNumber a samm:Property ;
+    samm:preferredName "Serial Number"@en ;
+    samm:preferredName "Seriennummer"@de ;
+    samm:description "The identification of the processed part based on a externally valid structured identifier."@en ;
+    samm:characteristic :SerialNumber .
+
+:productionTime a samm:Property ;
+    samm:preferredName "Production Time"@en ;
+    samm:description "Date and time, when the part was produced"@en ;
+    samm:characteristic samm-c:Timestamp .
+
+:isAssembledFrom a samm:Property ;
+    samm:preferredName "Is Assembled From"@en ;
+    samm:description "A list of processed parts this part is assembled from."@en ;
+    samm:characteristic [
+        a samm-c:SortedSet ;
+        samm-c:elementCharacteristic :PartNumber
+    ] .
+
+:resultState a samm:Property ;
+    samm:preferredName "Result State"@en ;
+    samm:description "Last recent result state of a part defines if the manufacturing is ok or nok in the current process"@en ;
+    samm:characteristic :ResultState .
+
+:ResultState a samm-c:Enumeration ;
+    samm:preferredName "Result State"@en ;
+    samm:description "Result state of a processed part from production"@en ;
+    samm:dataType :ResultEntity ;
+    samm-c:values ( :NoState
+                    :NotMeasuredState
+                    :PassedState
+                    :FailedState
+                    :AbortedState
+                    :ResultValueTooLowState
+                    :ResultValueTooHighState
+                    :RangeTooLargeState
+                    :ExtendedTimeLimitState
+                    :StringComparisonFailedState
+                    :MeasuredState
+                    :OutlierState
+                    :ResultNotUsedState
+                    :ScrappedState
+                    :IncompleteState ) .
+
+:ResultEntity a samm:Entity ;
+    samm:preferredName "Result Entity"@en ;
+    samm:description "Entity that describes a result state from production of a processed part."@en ;
+    samm:properties ( :resultStateAttributeValue
+                      [ samm:property :resultStateAttributeDescription ; samm:notInPayload "true"^^xsd:boolean ] ) .
+
+:resultStateAttributeValue a samm:Property ;
+    samm:preferredName "Result State Attribute Value"@en ;
+    samm:description "The value representing a specific result state."@en ;
+    samm:characteristic [
+        a samm-c:Code ;
+        samm:dataType xsd:integer
+    ] .
+
+:resultStateAttributeDescription a samm:Property ;
+    samm:preferredName "Result State Attribute Description"@en ;
+    samm:description "The description for a specific result state."@en ;
+    samm:characteristic samm-c:Text .
+# samm:characteristic samm-c:MultiLanguageText .
+
+:NoState a :ResultEntity ;
+    :resultStateAttributeValue "-1"^^xsd:integer ;
+    :resultStateAttributeDescription "No State" .
+
+:NotMeasuredState a :ResultEntity ;
+    :resultStateAttributeValue "0"^^xsd:integer ;
+    :resultStateAttributeDescription "Not Measured" .
+
+:PassedState a :ResultEntity ;
+    :resultStateAttributeValue "1"^^xsd:integer ;
+    :resultStateAttributeDescription "Passed" .
+
+:FailedState a :ResultEntity ;
+    :resultStateAttributeValue "2"^^xsd:integer ;
+    :resultStateAttributeDescription "Failed" .
+
+:AbortedState a :ResultEntity ;
+    :resultStateAttributeValue "3"^^xsd:integer ;
+    :resultStateAttributeDescription "Aborted" .
+
+:ResultValueTooLowState a :ResultEntity ;
+    :resultStateAttributeValue "4"^^xsd:integer ;
+    :resultStateAttributeDescription "Result Value too low" .
+
+:ResultValueTooHighState a :ResultEntity ;
+    :resultStateAttributeValue "5"^^xsd:integer ;
+    :resultStateAttributeDescription "Result Value too high" .
+
+:RangeTooLargeState a :ResultEntity ;
+    :resultStateAttributeValue "6"^^xsd:integer ;
+    :resultStateAttributeDescription "Range too large" .
+
+:ExtendedTimeLimitState a :ResultEntity ;
+    :resultStateAttributeValue "7"^^xsd:integer ;
+    :resultStateAttributeDescription "Extended time limit" .
+
+:StringComparisonFailedState a :ResultEntity ;
+    :resultStateAttributeValue "8"^^xsd:integer ;
+    :resultStateAttributeDescription "String comparison failed" .
+
+:MeasuredState a :ResultEntity ;
+    :resultStateAttributeValue "9"^^xsd:integer ;
+    :resultStateAttributeDescription "Measured" .
+
+:OutlierState a :ResultEntity ;
+    :resultStateAttributeValue "10"^^xsd:integer ;
+    :resultStateAttributeDescription "Outlier" .
+
+:ResultNotUsedState a :ResultEntity ;
+    :resultStateAttributeValue "11"^^xsd:integer ;
+    :resultStateAttributeDescription "Result not used" .
+
+:ScrappedState a :ResultEntity ;
+    :resultStateAttributeValue "12"^^xsd:integer ;
+    :resultStateAttributeDescription "Scrapped" .
+
+:IncompleteState a :ResultEntity ;
+    :resultStateAttributeValue "255"^^xsd:integer ;
+    :resultStateAttributeDescription "Incomptete" .
+
+:partType a samm:Property ;
+    samm:preferredName "Part Type"@en ;
+    samm:description "Type of processed part specifying the role it plays in the production process"@en ;
+    samm:characteristic :PartType .
+
+:PartType a samm-c:Enumeration ;
+    samm:preferredName "Part Type"@en ;
+    samm:description "Type of processed part specifying the role it plays in the production process"@en ;
+    samm:dataType :PartTypeEntity ;
+    samm-c:values ( :SeriesPart
+                    :TestPart
+                    :SamplePart
+                    :RepairPart
+                    :CalibrationPart
+                    :MasterPart
+                    :StrabilityPart
+                    :ChangeOverPart
+                    :DataExchangePart
+                    :EmptyWorpieceCarrier
+                    :CGMeasurementPart
+                    :SMMeasurementPart
+                    :AuditWorkpieceCarrier
+                    :GRRMeasurementPart
+                    :HeatupWorkpieceCarrier
+                    :GoldenDevice ) .
+
+:PartTypeEntity a samm:Entity ;
+    samm:preferredName "Part Type Entity"@en ;
+    samm:description "Entity that describes a type of a part."@en ;
+    samm:properties ( :partTypeAttributeValue
+                      [ samm:property :partTypeAttributeDescription ; samm:notInPayload "true"^^xsd:boolean ] ) .
+
+:partTypeAttributeValue a samm:Property ;
+    samm:preferredName "Part Type Attribute Value"@en ;
+    samm:description "The value representing a specific part type."@en ;
+    samm:characteristic [
+        a samm-c:Code ;
+        samm:dataType xsd:positiveInteger
+    ] .
+
+:partTypeAttributeDescription a samm:Property ;
+    samm:preferredName "Part Type Attribute Description"@en ;
+    samm:description "The description for a specific part type."@en ;
+    samm:characteristic samm-c:Text .
+# samm:characteristic samm-c:MultiLanguageText .
+
+:SeriesPart a :PartTypeEntity ;
+    :partTypeAttributeValue "0"^^xsd:positiveInteger  ;
+    :partTypeAttributeDescription "Regular part in series production" .
+
+:TestPart a :PartTypeEntity ;
+    :partTypeAttributeValue "1"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Part for testing production line" .
+
+:SamplePart a :PartTypeEntity ;
+    :partTypeAttributeValue "2"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Sample part" .
+
+:RepairPart a :PartTypeEntity ;
+    :partTypeAttributeValue "3"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Repair part" .
+
+:CalibrationPart a :PartTypeEntity ;
+    :partTypeAttributeValue "4"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Calibration part" .
+
+:MasterPart a :PartTypeEntity ;
+    :partTypeAttributeValue "5"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Master part" .
+
+:StrabilityPart a :PartTypeEntity ;
+    :partTypeAttributeValue "6"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Stability part" .
+
+:ChangeOverPart a :PartTypeEntity ;
+    :partTypeAttributeValue "7"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Changeover part" .
+
+:DataExchangePart a :PartTypeEntity ;
+    :partTypeAttributeValue "8"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Part for exchanging data between stations, programs" .
+
+:EmptyWorpieceCarrier a :PartTypeEntity ;
+    :partTypeAttributeValue "9"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Empty workpiece carrier" .
+
+:CGMeasurementPart a :PartTypeEntity ;
+    :partTypeAttributeValue "10"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Part for CG measurement" .
+
+:SMMeasurementPart a :PartTypeEntity ;
+    :partTypeAttributeValue "11"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Part for SM measurement" .
+
+:AuditWorkpieceCarrier a :PartTypeEntity ;
+    :partTypeAttributeValue "12"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Workpiece carrier for audit" .
+
+:GRRMeasurementPart a :PartTypeEntity ;
+    :partTypeAttributeValue "13"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Part for GRR measurement" .
+
+:HeatupWorkpieceCarrier a :PartTypeEntity ;
+    :partTypeAttributeValue "14"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Workpiece carrier for heatup" .
+
+:GoldenDevice a :PartTypeEntity ;
+    :partTypeAttributeValue "15"^^xsd:positiveInteger ;
+    :partTypeAttributeDescription "Golden device" .

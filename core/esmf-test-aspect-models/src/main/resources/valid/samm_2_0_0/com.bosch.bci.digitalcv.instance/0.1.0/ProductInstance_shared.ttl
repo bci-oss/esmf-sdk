@@ -1,0 +1,28 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.instance:0.1.0#>.
+@prefix type: <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#>.
+@prefix dcv: <urn:samm:com.bosch.bci.digitalcv:0.1.0#>.
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductInstance a samm:Entity ;
+    samm:preferredName "Product Instance"@en ;
+    samm:preferredName "Produktinstanz"@de ;
+    samm:description "Instance of a concrete product based on a product type."@en ;
+    samm:properties ( :processedPartId
+                      [ samm:property :serialNumber ; samm:optional true ]
+                      :productionTime
+                      :resultState
+                      type:materialNumber
+                      type:productDescription
+                      type:productClass
+                      [ samm:property type:productClassDescription ; samm:optional true ]
+                      [ samm:property :batchNumber ; samm:optional true ]
+#                     :batchDescription
+                      [ samm:property dcv:twinReference ; samm:optional true ] ) .

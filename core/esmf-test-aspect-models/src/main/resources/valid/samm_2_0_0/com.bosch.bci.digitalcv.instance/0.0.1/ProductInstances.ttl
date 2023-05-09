@@ -1,0 +1,74 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductInstances
+    a                  bamm:Aspect ;
+    bamm:name          "ProductInstances" ;
+    bamm:preferredName "Product Instances"@en ;
+    bamm:preferredName "Produktinstanzen"@de ;
+    bamm:description   "Aspect for product instances of a certain product type."@en ;
+    bamm:description   "Aspekt welcher die Produktinstanzen eines gewissen Produkttyps liefert"@de ;
+    bamm:properties    ( :root :productInstances ) ;
+    bamm:operations    ( ) .
+
+:root
+    a                   bamm:Property ;
+    bamm:name           "root" ;
+    bamm:preferredName  "Root entry reference"@en ;
+    bamm:description    "Reference to root part of a list of bill of materials"@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "RootEntity" ;
+                          bamm:dataType <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#ProductType> ] .
+
+:productInstances
+    a                   bamm:Property ;
+    bamm:name           "productInstances" ;
+    bamm:preferredName  "Product Instances"@en ;
+    bamm:preferredName  "Produktinstanzen"@de ;
+    bamm:description    "A list of product instances sorted in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Produktinstanzen."@de ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProductInstances" ;
+                          bamm:dataType :ProductInstance ] .
+
+:ProductInstance
+    a                  bamm:Entity ;
+    bamm:name          "ProductInstance" ;
+    bamm:preferredName "Product Instance"@en ;
+    bamm:preferredName "Produktinstanz"@de ;
+    bamm:description   "Instance of a concrete roduct based on a product type."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialDescription>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#batchId>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#batchDescription>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#uniquePartId>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#productionDate>
+                         :serialNumber ) .
+
+:serialNumber
+    a                   bamm:Property ;
+    bamm:name           "serialNumber" ;
+    bamm:preferredName  "Serial Number"@en ;
+    bamm:preferredName  "Seriennummer"@de ;
+    bamm:description    "The identification of the processed part based on a externally valid structured identifier."@en ;
+    bamm:characteristic :SerialNumber .
+
+:SerialNumber
+    a                 bamm-c:Trait ;
+    bamm:name         "SerialNumberConstraint" ;
+    bamm-c:baseCharacteristic [ a bamm-c:Code ;
+                                bamm:name          "SerialNumberCode" ;
+                                bamm:preferredName "Serial Number"@en ;
+                                bamm:dataType xsd:string
+                      ] ;
+    bamm-c:constraint [ a                         bamm-c:RegularExpressionConstraint ;
+                        bamm:name                 "SerialNumberPattern" ;
+                        bamm:value                "[A-Z0-9]{10,12}" ] .

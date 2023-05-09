@@ -1,0 +1,19 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv:0.0.2#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:twinReference a bamm:Property ;
+   bamm:preferredName "Twin Reference"@en ;
+   bamm:preferredName "Twin Referenz"@de ;
+   bamm:description "The Id of the Digital Twin representing the corresponding entity."@en ;
+   bamm:characteristic :Long .
+
+:Long a bamm:Characteristic ;
+   bamm:dataType xsd:long .

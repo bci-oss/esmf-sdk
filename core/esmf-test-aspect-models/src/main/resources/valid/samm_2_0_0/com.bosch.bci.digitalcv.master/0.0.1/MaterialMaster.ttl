@@ -1,0 +1,414 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.master:0.0.1#>.
+@prefix type:   <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#>.
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#>.
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#>.
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#>.
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+:MaterialMaster
+    a                  bamm:Aspect ;
+    bamm:name          "MaterialMaster" ;
+    bamm:preferredName "MaterialMaster"@en ;
+    bamm:description   "Aspect to provide Material Master information"@en ;
+    bamm:properties    ( type:materialNumber type:materialDescription :typeShortDescription :crossPlantMaterialStatus :baseUnitOfMeasure :manufacturer :weightUnit :grossWeight :termCode :division
+                         :countryOfOrigin :materialDesignation :indStdDesc :newMaterialNumber :typeShortDescription2 ) ;
+    bamm:operations    ( ) .
+
+
+:typeShortDescription
+    a                   bamm:Property ;
+    bamm:name           "typeShortDescription" ;
+    bamm:preferredName  "Type Short Description"@en ;
+    bamm:description    "typeShortDescription"@en ;
+    bamm:characteristic :TypeShortDescriptionTrait ;
+    bamm:exampleValue   "SENKSCHRAUBE       ISO7046-1M2,5X6-4.8" .
+
+:crossPlantMaterialStatus
+    a                   bamm:Property ;
+    bamm:name           "crossPlantMaterialStatus" ;
+    bamm:preferredName  "Cross Plant Material Status"@en ;
+    bamm:description    "Cross plant material status description"@en ;
+    bamm:characteristic :CrossPlantMaterialStatusConstraint ;
+    bamm:exampleValue   "AV" .
+
+:baseUnitOfMeasure
+    a                   bamm:Property ;
+    bamm:name           "baseUnitOfMeasure" ;
+    bamm:preferredName  "Base Unit of Measure"@en ;
+    bamm:description    "Base unit of measure"@en ;
+    bamm:characteristic :BaseUnitOfMasureConstraint ;
+    bamm:exampleValue   "PCE" .
+
+:manufacturer
+    a                   bamm:Property ;
+    bamm:name           "manufacturer" ;
+    bamm:preferredName  "Manufacturer"@en ;
+    bamm:description    "Description of the manufacturer"@en ;
+    bamm:characteristic :ManufacturerConstraint ;
+    bamm:exampleValue   "Bosch" .
+
+:weightUnit
+    a                   bamm:Property ;
+    bamm:name           "weightUnit" ;
+    bamm:preferredName  "Weight Unit"@en ;
+    bamm:description    "Weight unit of the material master"@en ;
+    bamm:characteristic :WeightUnitConstraint ;
+    bamm:exampleValue   "KG" .
+
+:grossWeight
+    a                   bamm:Property ;
+    bamm:name           "grossWeight" ;
+    bamm:preferredName  "Gross Weight"@en ;
+    bamm:description    "Gross weight or net weight of the material master"@en ;
+    bamm:characteristic :GrossWeightConstraint ;
+    bamm:exampleValue   "1,001" .
+
+:termCode
+    a                   bamm:Property ;
+    bamm:name           "termCode" ;
+    bamm:preferredName  "Term Code"@en ;
+    bamm:description    "The term code of material master.  This field provide the unique ID of an term code."@en ;
+    bamm:characteristic :TermCodeConstraint ;
+    bamm:exampleValue   "109460" .
+
+:division
+    a                   bamm:Property ;
+    bamm:name           "division" ;
+    bamm:preferredName  "Division"@en ;
+    bamm:description    "The division provide information about the Bosch entity."@en ;
+    bamm:characteristic :DivisionConstraint ;
+    bamm:exampleValue   "52" .
+
+:countryOfOrigin
+    a                   bamm:Property ;
+    bamm:name           "countryOfOrigin" ;
+    bamm:preferredName  "Country of Origin"@en ;
+    bamm:description    "Country of Origin Description (MARC-HERKL)"@en ;
+    bamm:characteristic :CountryOfOriginConstraint ;
+    bamm:exampleValue   "DE" .
+
+:materialDesignation
+    a                   bamm:Property ;
+    bamm:name           "materialDesignation" ;
+    bamm:preferredName  "Material designation"@en ;
+    bamm:description    "Material designation (SAP field MARA-ZZVORZTYP)"@en ;
+    bamm:characteristic :MaterialDesignationConstraint .
+
+:indStdDesc
+    a                   bamm:Property ;
+    bamm:name           "indStdDesc" ;
+    bamm:preferredName  "Ind. std desc."@en ;
+    bamm:description    "Ind. std desc. (SAP field MARA-NORMT)"@en ;
+    bamm:characteristic :IndustryStandardDescriptionConstraint .
+
+:newMaterialNumber
+    a                   bamm:Property ;
+    bamm:name           "newMaterialNumber" ;
+    bamm:preferredName  "New material number"@en ;
+    bamm:description    "New material number (SAP field MARA-ZZNEUMT)"@en ;
+    bamm:characteristic :NewMaterialNumberConstraint .
+
+:typeShortDescription2
+    a                   bamm:Property ;
+    bamm:name           "typeShortDescription2" ;
+    bamm:preferredName  "Type short description 2"@en ;
+    bamm:description    "Type short description 2 Description"@en ;
+    bamm:characteristic :TypeShortDescription2Constraint ;
+    bamm:exampleValue   "COUNTERSUNK SCREW  ISO7046-1-M2,5X6-4.8&" .
+
+:MaterialNumberConstraint
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "MaterialNumberConstraint" ;
+    bamm:preferredName "Material Number Constraint"@en ;
+    bamm:description   "The constraint of a material number"@en ;
+    bamm-c:minValue    "10"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "18"^^xsd:nonNegativeInteger .
+
+
+:TypeShortDescriptionConstraint
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "TypeShortDescriptionConstraint" ;
+    bamm:preferredName "Type short description constraint"@en ;
+    bamm:description   "The Constraint of type short description"@en ;
+    bamm-c:maxValue    "40"^^xsd:nonNegativeInteger .
+
+:CrossPlantMaterialStatusConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "CrossPlantMaterialStatusConstraint" ;
+    bamm-c:baseCharacteristic :CrossPlantMaterialStatusCharacteristic ;
+    bamm-c:constraint         :constraint_7706839yk .
+
+:BaseUnitOfMasureConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "BaseUnitOfMasureConstraint" ;
+    bamm-c:baseCharacteristic :BaseUnitOfMeasureCharacteristic ;
+    bamm-c:constraint         :constraint_vmk1xtojq .
+
+:ManufacturerConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "ManufacturerConstraint" ;
+    bamm-c:baseCharacteristic :ManufacturerCharacteristic ;
+    bamm-c:constraint         :constraint_1035ilj09 .
+
+:WeightUnitConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "WeightUnitConstraint" ;
+    bamm-c:baseCharacteristic :WeightUnitCharacteristic ;
+    bamm-c:constraint         :constraint_1rn17hjtg .
+
+:GrossWeightConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "GrossWeightConstraint" ;
+    bamm-c:baseCharacteristic :GrossWeightCharacteristic ;
+    bamm-c:constraint         :constraint_p1aj6ubmo .
+
+:TermCodeConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "TermCodeConstraint" ;
+    bamm-c:baseCharacteristic :TermCodeCharacteristic ;
+    bamm-c:constraint         :constraint_i8ull2ydf .
+
+:DivisionConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "DivisionConstraint" ;
+    bamm-c:baseCharacteristic :DivisionCharacteristic ;
+    bamm-c:constraint         :constraint_aw6m5y2fc .
+
+:CountryOfOriginConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "CountryOfOriginConstraint" ;
+    bamm-c:baseCharacteristic :CountryOfOriginCharacteristic ;
+    bamm-c:constraint         :constraint_g91tj8qd7 .
+
+:MaterialDesignationConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "MaterialDesignationConstraint" ;
+    bamm-c:baseCharacteristic :MaterialDesignationCharacteristic ;
+    bamm-c:constraint         :constraint_glqpzs1mn .
+
+:IndustryStandardDescriptionConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "IndustryStandardDescriptionConstraint" ;
+    bamm-c:baseCharacteristic :IndStdDescCharacteristic ;
+    bamm-c:constraint         :constraint_6rh6qmpau .
+
+:NewMaterialNumberConstraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "NewMaterialNumberConstraint" ;
+    bamm-c:baseCharacteristic :NewMaterialNumberCharacteristic ;
+    bamm-c:constraint         :constraint_3lx9l6kza .
+
+:TypeShortDescription2Constraint
+    a                         bamm-c:Trait ;
+    bamm:name                 "TypeShortDescription2Constraint" ;
+    bamm-c:baseCharacteristic :TypeShortDescription2 ;
+    bamm-c:constraint         :MaterialDescriptionConstraint .
+
+:MaterialNumberCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "MaterialNumberCharacteristic" ;
+    bamm:preferredName "Material Number Characteristic"@en ;
+    bamm:description   "The characteristic of a material number"@en ;
+    bamm:dataType      xsd:string .
+
+:MaterialDescriptionCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "MaterialDescriptionCharacteristic" ;
+    bamm:preferredName "Material Description Characteristic"@en ;
+    bamm:dataType      xsd:string .
+
+:TypeShortDescriptionCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "TypeShortDescriptionCharacteristic" ;
+    bamm:preferredName "Type Short Description Characteristic"@en ;
+    bamm:description   "Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:CrossPlantMaterialStatusCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "CrossPlantMaterialStatusCharacteristic" ;
+    bamm:preferredName "Cross Plant Material Status Characteristic"@en ;
+    bamm:description   "The cross plant material status characteristic"@en ;
+    bamm:dataType      xsd:string .
+
+:BaseUnitOfMeasureCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "BaseUnitOfMeasureCharacteristic" ;
+    bamm:preferredName "Base Unit Of Measure Characteristic"@en ;
+    bamm:description   "Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:ManufacturerCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "ManufacturerCharacteristic" ;
+    bamm:preferredName "Manufacturer Characteristic"@en ;
+    bamm:description   "Manufacturer Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:WeightUnitCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "WeightUnitCharacteristic" ;
+    bamm:preferredName "Weight Unit Characteristic"@en ;
+    bamm:description   "Weight Unit Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:GrossWeightCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "GrossWeightCharacteristic" ;
+    bamm:preferredName "Gross Weight Characteristic"@en ;
+    bamm:description   "Gross Weight Characteristic description "@en ;
+    bamm:dataType      xsd:string .
+
+:TermCodeCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "TermCodeCharacteristic" ;
+    bamm:preferredName "Term Code Characteristic"@en ;
+    bamm:description   "The term code characteristic of a material"@en ;
+    bamm:dataType      xsd:string .
+
+:DivisionCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "DivisionCharacteristic" ;
+    bamm:preferredName "DivisionCharacteristik"@en ;
+    bamm:description   "Test"@en ;
+    bamm:dataType      xsd:string .
+
+:CountryOfOriginCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "CountryOfOriginCharacteristic" ;
+    bamm:preferredName "Country of Origin Characteristic"@en ;
+    bamm:description   "Country of Origin Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:MaterialDesignationCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "MaterialDesignationCharacteristic" ;
+    bamm:preferredName "Material Designation Characteristic"@en ;
+    bamm:description   "Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:IndStdDescCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "IndStdDescCharacteristic" ;
+    bamm:preferredName "ind Std Desc Characteristic"@en ;
+    bamm:description   "ind Std Desc Characteristic Description"@en ;
+    bamm:dataType      xsd:string .
+
+:NewMaterialNumberCharacteristic
+    a                  bamm:Characteristic ;
+    bamm:name          "NewMaterialNumberCharacteristic" ;
+    bamm:preferredName "New Material Number Characteristic"@en ;
+    bamm:dataType      xsd:string .
+
+:TypeShortDescription2
+    a                  bamm:Characteristic ;
+    bamm:name          "TypeShortDescription2" ;
+    bamm:preferredName "Type short description 2"@en ;
+    bamm:description   "Type short description 2 Description"@en ;
+    bamm:dataType      xsd:string .
+
+:constraint_7706839yk
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_7706839yk" ;
+    bamm:preferredName "Cross Plant Material Status Constraint"@en ;
+    bamm:description   "Constraint of the cross plant material status"@en ;
+    bamm-c:minValue    "1"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "2"^^xsd:nonNegativeInteger .
+
+:constraint_vmk1xtojq
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_vmk1xtojq" ;
+    bamm:preferredName "Base unit of measure constraint"@en ;
+    bamm:description   "The constraint of base unit of measure for a material"@en ;
+    bamm-c:minValue    "1"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "3"^^xsd:nonNegativeInteger .
+
+:constraint_1035ilj09
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_1035ilj09" ;
+    bamm:preferredName "Manufacturer constraint"@en ;
+    bamm:description   "The constraint of a manufacturer"@en ;
+    bamm-c:maxValue    "10"^^xsd:nonNegativeInteger .
+
+:constraint_1rn17hjtg
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_1rn17hjtg" ;
+    bamm:preferredName "Weight unit constraint@"@en ;
+    bamm:description   "The weight unit Constraint"@en ;
+    bamm-c:minValue    "1"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "3"^^xsd:nonNegativeInteger .
+
+:constraint_p1aj6ubmo
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_p1aj6ubmo" ;
+    bamm:preferredName "Gross weight constraint"@en ;
+    bamm:description   "The gross weight constraint of a Material"@en ;
+    bamm-c:minValue    "1"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "17"^^xsd:nonNegativeInteger .
+
+:constraint_i8ull2ydf
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_i8ull2ydf" ;
+    bamm:preferredName "TermCodeConstraint"@en ;
+    bamm:description   "The term code of a material"@en ;
+    bamm-c:maxValue    "6"^^xsd:nonNegativeInteger .
+
+:constraint_aw6m5y2fc
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_aw6m5y2fc" ;
+    bamm:preferredName "Division constraint"@en ;
+    bamm:description   "The constraint for a division of a material"@en ;
+    bamm-c:minValue    "2"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "55"^^xsd:nonNegativeInteger .
+
+:constraint_g91tj8qd7
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_g91tj8qd7" ;
+    bamm:preferredName "Country of origin constraint"@en ;
+    bamm:description   "The country of origin constraint for a material"@en ;
+    bamm-c:minValue    "2"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "3"^^xsd:nonNegativeInteger .
+
+:constraint_glqpzs1mn
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_glqpzs1mn" ;
+    bamm:preferredName "Material designation constraint"@en ;
+    bamm:description   "The material designation constraint of a material"@en ;
+    bamm-c:minValue    "2"^^xsd:nonNegativeInteger ;
+    bamm-c:maxValue    "2"^^xsd:nonNegativeInteger .
+
+:constraint_6rh6qmpau
+    a                  bamm-c:LengthConstraint ;
+    bamm:name          "constraint_6rh6qmpau" ;
+    bamm:preferredName "Industry standard description constraint"@en ;
+    bamm:description   "The constraint of the field \"Industry standard description\" of a material"@en ;
+    bamm-c:maxValue    "18"^^xsd:nonNegativeInteger .
+
+:constraint_3lx9l6kza
+    a                bamm-c:LengthConstraint ;
+    bamm:name        "constraint_3lx9l6kza" ;
+    bamm:description "newMaterialNumber"@en ;
+    bamm-c:maxValue  "18"^^xsd:nonNegativeInteger .
+
+:MaterialNumberTrait
+    a                         bamm-c:Trait ;
+    bamm:name                 "MaterialNumberTrait" ;
+    bamm:preferredName        "Material Number Trait"@en ;
+    bamm-c:baseCharacteristic :MaterialNumberCharacteristic ;
+    bamm-c:constraint         :MaterialNumberConstraint .
+
+:MaterialDescriptionTrait
+    a                         bamm-c:Trait ;
+    bamm:name                 "MaterialDescriptionTrait" ;
+    bamm:preferredName        "Material Description Constraint"@en ;
+    bamm-c:baseCharacteristic :MaterialDescriptionCharacteristic ;
+    bamm-c:constraint         :MaterialDescriptionConstraint .
+
+:TypeShortDescriptionTrait
+    a                         bamm-c:Trait ;
+    bamm:name                 "TypeShortDescriptionTrait" ;
+    bamm:preferredName        "Type Short Description Trait"@en ;
+    bamm-c:baseCharacteristic :TypeShortDescriptionCharacteristic ;
+    bamm-c:constraint         :TypeShortDescriptionConstraint .

@@ -1,0 +1,27 @@
+#
+# Aspect model for plants
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.location:0.1.0#>.
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Countries
+    a                  samm:Aspect ;
+    samm:name          "Countries" ;
+    samm:preferredName "Countries"@en ;
+    samm:description   "Aspect for countries."@en ;
+    samm:properties    ( :items ) ;
+    samm:operations    ( ) .
+
+:items
+    a                   samm:Property ;
+    samm:name           "items" ;
+    samm:preferredName  "Country List"@en ;
+    samm:description    "A list of countries."@en ;
+    samm:characteristic [ a             samm-c:SortedSet ;
+                          samm:name     "Countries" ;
+                          samm:dataType :Country ] .

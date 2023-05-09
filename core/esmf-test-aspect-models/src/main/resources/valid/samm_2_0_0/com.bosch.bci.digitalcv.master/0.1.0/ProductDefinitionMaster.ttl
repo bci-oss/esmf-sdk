@@ -1,0 +1,174 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.master:0.1.0#>.
+@prefix dcv:    <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+@prefix type:   <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#>.
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductDefinitionMaster
+    a                  samm:Aspect ;
+    samm:name          "ProductDefinitionMaster" ;
+    samm:preferredName "Product Definition Master"@en ;
+    samm:description   "Aspect for product definition master data."@en ;
+    samm:properties    ( :items ) ;
+    samm:operations    ( ) .
+
+:items
+    a                   samm:Property ;
+    samm:name           "items" ;
+    samm:preferredName  "Product Definition Master Data"@en ;
+    samm:description    "A list of product definition sorted in chronological order."@en ;
+    samm:characteristic [ a             samm-c:SortedSet ;
+                          samm:name     "ProductDefMasterData" ;
+                          samm:dataType :ProductDefinition ] .
+
+:ProductDefinition
+    a                  samm:Entity ;
+    samm:name          "ProductDefinition" ;
+    samm:preferredName "Product Definition"@en ;
+    samm:preferredName "Produktdefinition"@de ;
+    samm:description   "Definition of a product based on a SAP material number."@en ;
+    samm:properties    ( :productHierarchyId
+                         :product ) .
+
+:product
+    a                   samm:Property ;
+    samm:name           "items" ;
+    samm:preferredName  "Product Definition Master Data"@en ;
+    samm:description    "A list of product definition sorted in chronological order."@en ;
+    samm:characteristic [ a             samm-c:SingleEntity ;
+                          samm:name     "ProductData" ;
+                          samm:dataType :Product ] .
+
+:Product
+    a                  samm:Entity ;
+    samm:name          "Product" ;
+    samm:preferredName "Product"@en ;
+    samm:preferredName "Produkt"@de ;
+    samm:description   "Product based on a SAP part number."@en ;
+    samm:properties    ( :partNumber
+                         [ samm:property type:productDescription; samm:optional true ]
+                         :hasSystemID
+                         :hasPlantSAP
+                         :hasProductTypeSAP ) .
+
+:partNumber
+    a                   samm:Property ;
+    samm:name           "partNumber" ;
+    samm:preferredName  "Part Number"@en ;
+    samm:preferredName  "Materialnummer"@de ;
+    samm:description    "The identification of the product based on the SAP material number."@en ;
+    samm:exampleValue   "F03Z12345602" ;
+    samm:characteristic type:MaterialNumber .
+
+:productHierarchyId
+    a                   samm:Property ;
+    samm:name           "productHierarchyId" ;
+    samm:preferredName  "Product Hierarchy ID"@en ;
+    samm:preferredName  "Produkthierarchie ID"@de ;
+    samm:description    "The identification of the product hierarchy in master data."@en ;
+    samm:exampleValue   "000010001100000110" ;
+    samm:characteristic :ProductHierarchyId .
+
+:ProductHierarchyId
+    a                         samm-c:Trait ;
+    samm:name                 "ProductHierarchyId" ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:name  "ProductHierarchyPattern" ;
+                                samm:value "[0-9]{6,18}" ] .
+
+:hasSystemID
+    a                   samm:Property ;
+    samm:name           "hasSystemID" ;
+    samm:preferredName  "has System ID"@en ;
+    samm:preferredName  "hat System-ID"@de ;
+    samm:description    "The identification of SAP system."@en ;
+    samm:exampleValue   "SAPKP10130" ;
+    samm:see <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=433805519>;
+    samm:characteristic :SAPSystemID .
+
+:SAPSystemID
+    a                         samm-c:Trait ;
+    samm:name                 "SAPSystemID" ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:name  "SAPSystemIDPattern" ;
+                                samm:value "SAP0[A-Z0-9]{3}[A-Z0-9]{3}" ] .
+
+:hasPlantSAP
+    a                   samm:Property ;
+    samm:name           "plants" ;
+    samm:preferredName  "Plants"@en ;
+    samm:description    "A list of plants where product is being produced."@en ;
+    samm:characteristic [ a             samm-c:SortedSet ;
+                          samm:name     "PlantList" ;
+                          samm:dataType :PlantReference ] .
+
+:PlantReference
+    a                  samm:Entity ;
+    samm:name          "PlantReference" ;
+    samm:preferredName "Plant Reference"@en ;
+    samm:preferredName "Werksreferenz"@de ;
+    samm:description   "Reference for a production plant."@en ;
+    samm:properties    ( :plantId ) .
+
+:hasProductTypeSAP
+    a                   samm:Property ;
+    samm:name           "hasProductTypeSAP" ;
+    samm:preferredName  "Product Type"@en ;
+    samm:description    "Product type of product definition."@en ;
+    samm:characteristic [ a             samm-c:SingleEntity ;
+                          samm:name     "ProductData" ;
+                          samm:dataType :ProductTypeReference ] .
+
+:ProductTypeReference
+    a                  samm:Entity ;
+    samm:name          "ProductTypeReference" ;
+    samm:preferredName "Product Type Reference"@en ;
+    samm:preferredName "Produkttypreferenz"@de ;
+    samm:description   "Reference to product type."@en ;
+    samm:properties    ( :productType ) .
+
+:productType
+    a                   samm:Property ;
+    samm:name           "productType" ;
+    samm:preferredName  "product type"@en ;
+    samm:preferredName  "Produkttyp"@de ;
+    samm:description    "Product or material type from SAP."@en ;
+    samm:exampleValue   "HALB" ;
+    samm:see <https://inside-docupedia.bosch.com/confluence/display/BMDIP/Material+Type>;
+    samm:characteristic :ProductType .
+
+:ProductType
+    a                         samm-c:Trait ;
+    samm:name                 "ProductType" ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:name  "SAPProductTypePattern" ;
+                                samm:value "[A-Z0-9]{4}" ] .
+
+:plantId
+    a                   samm:Property ;
+    samm:name           "plantId" ;
+    samm:preferredName  "Plant ID"@en ;
+    samm:preferredName  "Fabrikcode"@de ;
+    samm:description    "The identification of a production plant identifier from SAP"@en ;
+    samm:exampleValue   "HoP2" ;
+    samm:see            <http://bos.ch/i40/core/equipment#plantId> ;
+    samm:see            <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=442656575>;
+    samm:characteristic :PlantCode .
+
+:PlantCode
+    a                         samm-c:Trait ;
+    samm:name                 "PlantCode" ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:name  "PlantCodePattern" ;
+                                samm:value "[A-Za-z0-9]{3,4}" ] .

@@ -1,0 +1,460 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.quality:0.1.0#> .
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix inst: <urn:samm:com.bosch.bci.digitalcv.instance:0.1.0#> .
+@prefix type: <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#> .
+
+:QualityComplaints a samm:Aspect ;
+   samm:preferredName "Quality Complaints"@en ;
+   samm:description "List of quality complaints for a product type or vehicle"@en ;
+   samm:properties ( :complaints ) ;
+   samm:operations ( ) ;
+   samm:events ( ) .
+
+:complaints a samm:Property ;
+   samm:preferredName "complaints"@en ;
+   samm:description "List of complaints"@en ;
+   samm:characteristic :ComplaintList .
+
+:ComplaintList a samm-c:SortedSet ;
+   samm:preferredName "Complaint List"@en ;
+   samm:dataType :QualityComplaint .
+
+:QualityComplaint a samm:Entity ;
+   samm:preferredName "Quality Complaint"@en ;
+   samm:description "Complaint about the quality of a product"@en ;
+   samm:properties ( :productType :moduleType [ samm:property :productInstance; samm:optional true ] :complaintMode :failureType [ samm:property :complaintDate; samm:optional true ] :failureDate :completionDate :manufacturingDate [ samm:property :notificationDate; samm:optional true ] :notificationNumber [ samm:property :notificationDescription; samm:optional true ] :customer [ samm:property :vehicle; samm:optional true ] :defectLocation :defectTypeGroup :defectTypeText :externalQ8Notification [ samm:property :countryOfFailure; samm:optional true ] ) .
+
+:productType a samm:Property ;
+   samm:preferredName "productType"@en ;
+   samm:description "Product type for which the complaint was issued"@en ;
+   samm:characteristic :ProductTypeData .
+
+:moduleType a samm:Property ;
+   samm:preferredName "moduleType"@en ;
+   samm:description "Module type for which the complaint was issued"@en ;
+   samm:characteristic :ProductTypeData .
+
+:productInstance a samm:Property ;
+   samm:preferredName "product instance"@en ;
+   samm:description "Reference of product instances that this complaint concerns"@en ;
+   samm:characteristic :ProductInstanceData .
+
+:complaintMode a samm:Property ;
+   samm:preferredName "complaint mode"@en ;
+   samm:characteristic :ComplaintModeEntity .
+
+:failureType a samm:Property ;
+   samm:preferredName "failure type"@en ;
+   samm:characteristic :FailureTypeEntity .
+
+:complaintDate a samm:Property ;
+   samm:preferredName "complaint date"@en ;
+   samm:description "Date when claim has been filed"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:failureDate a samm:Property ;
+   samm:preferredName "failure date"@en ;
+   samm:description "Date when claimed part has failed"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:completionDate a samm:Property ;
+   samm:preferredName "completion date"@en ;
+   samm:description "Date when claim was completed"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:manufacturingDate a samm:Property ;
+   samm:preferredName "manufacturing date"@en ;
+   samm:description "Date when claimed parts were manufactured by vendor"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:notificationDate a samm:Property ;
+   samm:preferredName "notification date"@en ;
+   samm:description "date when vendor was notified of complaint"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:notificationNumber a samm:Property ;
+   samm:preferredName "notification number"@en ;
+   samm:description "Unique identifier of claim notification"@en ;
+   samm:characteristic :NotificationIdentifier .
+
+:notificationDescription a samm:Property ;
+   samm:preferredName "notification description"@en ;
+   samm:description "Text for claim notification provided by customer"@en ;
+   samm:characteristic samm-c:Text .
+
+:customer a samm:Property ;
+   samm:preferredName "customer"@en ;
+   samm:characteristic :CustomerData .
+
+:vehicle a samm:Property ;
+   samm:preferredName "vehicle"@en ;
+   samm:description "Details of impacted vehicle"@en ;
+   samm:characteristic :VehicleData .
+
+:defectLocation a samm:Property ;
+   samm:preferredName "defect location"@en ;
+   samm:characteristic :DefectLocationData .
+
+:defectTypeGroup a samm:Property ;
+   samm:preferredName "defect type group"@en ;
+   samm:characteristic :DefectTypeGroupData .
+
+:defectTypeText a samm:Property ;
+   samm:preferredName "defect type text"@en ;
+   samm:characteristic samm-c:Text .
+
+:externalQ8Notification a samm:Property ;
+   samm:preferredName "external Q8 notification"@en ;
+   samm:characteristic :ExternalQ8NotificationData .
+
+:countryOfFailure a samm:Property ;
+   samm:preferredName "country of failure"@en ;
+   samm:characteristic samm-c:Text .
+
+:ProductTypeData a samm-c:SingleEntity ;
+   samm:preferredName "Product Type Data"@en ;
+   samm:dataType :ProductType .
+
+:ProductInstanceData a samm-c:SingleEntity ;
+   samm:preferredName "Product Instances Data"@en ;
+   samm:dataType :ProductInstance .
+
+:ComplaintModeEntity a samm:Characteristic ;
+   samm:preferredName "Complaint Mode Entity"@en ;
+   samm:dataType :ComplaintMode .
+
+:FailureTypeEntity a samm:Characteristic ;
+   samm:preferredName "Failure Type Enity"@en ;
+   samm:dataType :FailureType .
+
+:NotificationIdentifier a samm-c:Code ;
+   samm:dataType xsd:string .
+
+:CustomerData a samm-c:SingleEntity ;
+   samm:preferredName "customer data"@en ;
+   samm:dataType :Customer .
+
+:VehicleData a samm-c:SingleEntity ;
+   samm:preferredName "Vehicle Data"@en ;
+   samm:dataType :Vehicle .
+
+:DefectLocationData a samm-c:SingleEntity ;
+   samm:preferredName "Defect Location Data"@en ;
+   samm:dataType :DefectLocation .
+
+:DefectTypeGroupData a samm-c:SingleEntity ;
+   samm:preferredName "Defect Type Group Data"@en ;
+   samm:dataType :DefectTypeGroup .
+
+:ExternalQ8NotificationData a samm:Characteristic ;
+   samm:preferredName "External Q8 Notification Data"@en ;
+   samm:dataType :ExternalQ8Notification .
+
+:ProductType a samm:Entity ;
+   samm:preferredName "Product Type"@en ;
+   samm:description "Product data from claim"@en ;
+   samm:properties ( type:materialNumber [ samm:property :productDescription; samm:optional true ] :productClassificationDescription :plantCode ) .
+
+:ProductInstance a samm:Entity ;
+   samm:preferredName "Product Instance"@en ;
+   samm:description "Details of a product instance"@en ;
+   samm:properties ( :serialNumber type:materialNumber [ samm:property inst:processedPartId; samm:optional true ] ) .
+
+:ComplaintMode a samm:Entity ;
+   samm:preferredName "Complaint Mode"@en ;
+   samm:properties ( :complaintModeCode :complaintModeDescription ) .
+
+:FailureType a samm:Entity ;
+   samm:preferredName "Failure Type"@en ;
+   samm:properties ( :failureTypeDescription :warrantyDecision :investigationPlantPosition [ samm:property :repairKey; samm:optional true ] [ samm:property :itemCategory; samm:optional true ] ) .
+
+:Customer a samm:Entity ;
+   samm:preferredName "Customer"@en ;
+   samm:description "Customer details"@en ;
+   samm:properties ( :groupKey [ samm:property :businessPartnerId; samm:optional true ] :customerPartNumber [ samm:property :customerConcernText; samm:optional true ] ) .
+
+:Vehicle a samm:Entity ;
+   samm:preferredName "Vehicle"@en ;
+   samm:description "Vehicle information"@en ;
+   samm:properties ( :vehicleId :vehicleModel :modelYear [ samm:property :vehicleMileage; samm:optional true ] ) .
+
+:DefectLocation a samm:Entity ;
+   samm:preferredName "Defect Location"@en ;
+   samm:description "Details of the location where a defect was detected"@en ;
+   samm:properties ( [ samm:property :defectLocationCode; samm:optional true ] [ samm:property :defectLocationCodeText; samm:optional true ] :defectLocationTypeText :defectLocationGroupCode :defectLocationGroupCodeText ) .
+
+:DefectTypeGroup a samm:Entity ;
+   samm:preferredName "Defect Type Group"@en ;
+   samm:description "Details of the defect type"@en ;
+   samm:properties ( :defectTypeGroupCode :defectTypeGroupCodeText ) .
+
+:ExternalQ8Notification a samm:Entity ;
+   samm:preferredName "External Q8 Notification"@en ;
+   samm:properties ( :externalQ8NotificationCode :externalQ8NotificationText ) .
+
+:productDescription a samm:Property ;
+   samm:preferredName "product description"@en ;
+   samm:description "Description of product"@en ;
+   samm:characteristic samm-c:Text .
+
+:productClassificationDescription a samm:Property ;
+   samm:preferredName "product classification description"@en ;
+   samm:characteristic samm-c:Text .
+
+:plantCode a samm:Property ;
+   samm:preferredName "plant code"@en ;
+   samm:description "identifier of plant where material was produced e.g. from SAP"@en ;
+   samm:characteristic :PlantCode .
+
+:investigationPlantPosition a samm:Property ;
+   samm:preferredName "investigation plant position"@en ;
+   samm:description "investigation plant position"@en ;
+   samm:characteristic :InvestigationPlantPosition .
+
+:serialNumber a samm:Property ;
+   samm:preferredName "serial number"@en ;
+   samm:description "external identifier of product instance"@en ;
+   samm:characteristic :SerialNumber .
+
+:complaintModeCode a samm:Property ;
+   samm:preferredName "complaint mode code"@en ;
+   samm:characteristic :ComplaintModeCode .
+
+:complaintModeDescription a samm:Property ;
+   samm:preferredName "complaint mode description"@en ;
+   samm:characteristic samm-c:Text .
+
+:failureTypeDescription a samm:Property ;
+   samm:preferredName "failure type description"@en ;
+   samm:characteristic samm-c:Text .
+
+:warrantyDecision a samm:Property ;
+   samm:preferredName "warranty decision"@en ;
+   samm:description "warranty decision codes"@en ;
+   samm:characteristic :WarrantyDecisions .
+
+:repairKey a samm:Property ;
+   samm:preferredName "repair key"@en ;
+   samm:description "repair key"@en ;
+   samm:characteristic :RepairKey .
+
+:itemCategory a samm:Property ;
+   samm:preferredName "item category"@en ;
+   samm:description "item category of investigation"@en ;
+   samm:characteristic :ItemCategory .
+
+:businessPartnerId a samm:Property ;
+   samm:preferredName "business partner ID"@en ;
+   samm:description "unique business partner id"@en ;
+   samm:characteristic :BusinessPartnerId .
+
+:customerPartNumber a samm:Property ;
+   samm:preferredName "customer part number"@en ;
+   samm:description "Part number of customer for the claimed part"@en ;
+   samm:characteristic :CustomerPartNumber .
+
+:groupKey a samm:Property ;
+   samm:preferredName "customer group key"@en ;
+   samm:description "Group key of the customer"@en ;
+   samm:characteristic :CustomerGroupKey .
+
+:customerConcernText a samm:Property ;
+   samm:preferredName "customer concern text"@en ;
+   samm:characteristic samm-c:Text .
+
+:vehicleId a samm:Property ;
+   samm:preferredName "vehicle Id"@en ;
+   samm:description "unique vehicle id (vin)"@en ;
+   samm:characteristic :VehicleID .
+
+:vehicleModel a samm:Property ;
+   samm:preferredName "vehicle model"@en ;
+   samm:description "Model description of vehicle"@en ;
+   samm:characteristic :VehicleModel .
+
+:modelYear a samm:Property ;
+   samm:preferredName "model year"@en ;
+   samm:description "Year when model of vehicle was produced"@en ;
+   samm:characteristic :Year .
+
+:vehicleMileage a samm:Property ;
+   samm:preferredName "vehicle mileage"@en ;
+   samm:characteristic :Mileage .
+
+:defectLocationCode a samm:Property ;
+   samm:preferredName "defect location code"@en ;
+   samm:characteristic :DefectLocationCode .
+
+:defectLocationCodeText a samm:Property ;
+   samm:preferredName "defect location code text"@en ;
+   samm:characteristic samm-c:Text .
+
+:defectLocationTypeText a samm:Property ;
+   samm:preferredName "defect location type text"@en ;
+   samm:characteristic samm-c:Text .
+
+:defectLocationGroupCode a samm:Property ;
+   samm:preferredName "defect location group code"@en ;
+   samm:characteristic :DefectLocationGroupCode .
+
+:defectLocationGroupCodeText a samm:Property ;
+   samm:preferredName "defect location group code text"@en ;
+   samm:characteristic samm-c:Text .
+
+:defectTypeGroupCode a samm:Property ;
+   samm:preferredName "defect type group code"@en ;
+   samm:characteristic :DefectTypeGroupCode .
+
+:defectTypeGroupCodeText a samm:Property ;
+   samm:preferredName "defect type group code text"@en ;
+   samm:characteristic samm-c:Text .
+
+:externalQ8NotificationCode a samm:Property ;
+   samm:preferredName "external Q8 notification code"@en ;
+   samm:characteristic :ExternalQ8NotificationCode .
+
+:externalQ8NotificationText a samm:Property ;
+   samm:preferredName "external Q8 notification text"@en ;
+   samm:characteristic samm-c:Text .
+
+:PlantCode a samm-c:Code ;
+   samm:preferredName "Plant Code"@en ;
+   samm:dataType xsd:string .
+
+:InvestigationPlantPosition a samm-c:Code ;
+   samm:preferredName "Investigation Plant Position"@en ;
+   samm:dataType xsd:string .
+
+:SerialNumber a samm-c:Code ;
+   samm:preferredName "Serial Number"@en ;
+   samm:dataType xsd:string .
+
+:ComplaintModeCode a samm-c:Code ;
+   samm:preferredName "Complaint Mode Code"@en ;
+   samm:dataType xsd:positiveInteger .
+
+:WarrantyDecisions a samm-c:Enumeration ;
+   samm:preferredName "Warranty Decisions"@en ;
+   samm:dataType xsd:string ;
+   samm-c:values ( "B" "C" "S" "O" ) .
+
+:RepairKey a samm-c:Code ;
+   samm:preferredName "Repair Key"@en ;
+   samm:dataType xsd:positiveInteger .
+
+:ItemCategory a samm-c:Enumeration ;
+    samm:preferredName "Item Category"@en ;
+    samm:description "Category of the claim item"@en ;
+    samm:dataType :ItemCategoryEntity ;
+    samm-c:values ( :ItemCategoryCoInvestigation :ItemCategoryCoInvestigationFinal :ItemCategoryPreInvestigation :ItemCategoryMainInvestigation :ItemCategoryStatisticalPosition ) .
+
+:ItemCategoryEntity a samm:Entity ;
+   samm:preferredName "Item Category Entity"@en ;
+   samm:description   "Entity that describes an item category."@en ;
+   samm:properties    ( :itemCategoryAttributeValue
+                         [ samm:property     :itemCategoryAttributeDescription ;
+                           samm:notInPayload "true"^^xsd:boolean ] ) .
+
+:itemCategoryAttributeValue a samm:Property ;
+    samm:name "itemCategoryAttributeValue" ;
+    samm:preferredName "Item Category Attribute Value"@en ;
+    samm:description "The value representing a specific item category."@en ;
+    samm:characteristic [ a  samm-c:Code ;
+                          samm:name     "ItemCategoryAttributeCode" ;
+                          samm:dataType xsd:string ] .
+
+:itemCategoryAttributeDescription a samm:Property ;
+    samm:name  "itemCategoryAttributeDescription" ;
+    samm:preferredName  "Item Category Attribute Description"@en ;
+    samm:description    "The description for an item category."@en ;
+    samm:characteristic samm-c:Text .
+
+:ItemCategoryCoInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "co investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was co-investigated" .
+
+:ItemCategoryCoInvestigationFinal a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "co investigation with final resp."^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in co investigation and has a final response" .
+
+:ItemCategoryPreInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "pre investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in pre investigation" .
+
+:ItemCategoryMainInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "main investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in main investigation" .
+
+:ItemCategoryStatisticalPosition a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "statistical position"^^xsd:string ;
+    :itemCategoryAttributeDescription "Statistical position" .
+
+:SortNumberPosition a samm-c:Code ;
+   samm:preferredName "Repair Key"@en ;
+   samm:dataType xsd:positiveInteger .
+
+:BusinessPartnerId a samm-c:Code ;
+   samm:preferredName "Business Partner ID"@en ;
+   samm:dataType xsd:string .
+
+:CustomerPartNumber a samm-c:Code ;
+   samm:preferredName "customer part number"@en ;
+   samm:dataType xsd:string .
+
+:CustomerGroupKey a samm-c:Code ;
+   samm:preferredName "customer group key"@en ;
+   samm:dataType xsd:string .
+
+:VehicleID a samm-c:Trait ;
+   samm-c:baseCharacteristic [
+      a samm-c:Code ;
+      samm:preferredName "Vehicle Number"@en ;
+      samm:dataType xsd:string ;
+      samm:name "VehicleID" 
+   ] ;
+   samm-c:constraint [
+      a samm-c:RegularExpressionConstraint ;
+      samm:value "[1234567890ABCDEFGHJKLMNPRSTUVWXYZ]{17}" ;
+      samm:name "VINPattern" 
+   ] ;
+   samm:name "VINConstraint" .
+
+:VehicleModel a samm-c:Code ;
+   samm:preferredName "Vehicle Model"@en ;
+   samm:dataType xsd:string .
+
+:Year a samm-c:Code ;
+   samm:preferredName "Year"@en ;
+   samm:dataType xsd:gYear .
+
+:Mileage a samm-c:Quantifiable ;
+   samm:preferredName "Mileage"@en ;
+   samm:dataType xsd:integer ;
+   samm-c:unit unit:kilometre .
+
+:DefectLocationCode a samm-c:Code ;
+   samm:preferredName "Defect Location Code"@en ;
+   samm:dataType xsd:string .
+
+:DefectLocationGroupCode a samm-c:Code ;
+   samm:preferredName "Defect Location Group Code"@en ;
+   samm:dataType xsd:string .
+
+:DefectTypeGroupCode a samm-c:Code ;
+   samm:preferredName "Defect Type Group Code"@en ;
+   samm:dataType xsd:string .
+
+:ExternalQ8NotificationCode a samm-c:Code ;
+   samm:preferredName "External Q8 Notification Code"@en ;
+   samm:dataType xsd:string .
+

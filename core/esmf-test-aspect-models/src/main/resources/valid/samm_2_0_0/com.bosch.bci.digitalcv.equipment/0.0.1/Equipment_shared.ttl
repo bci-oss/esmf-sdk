@@ -1,0 +1,122 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+
+:EquipmentAddress a bamm:Entity ;
+    bamm:preferredName "Equipment Address"@en ;
+    bamm:description "Address of an equipment."@en ;
+    bamm:properties ( :plantId
+                      [ bamm:property :lineId; bamm:optional true ]
+                      [ bamm:property :stationId; bamm:optional true ]
+                      [ bamm:property :stationIndex; bamm:optional true ]
+                      [ bamm:property :workPosition; bamm:optional true ]
+                      [ bamm:property :toolPosition; bamm:optional true ] ) .
+
+:plantId a bamm:Property ;
+    bamm:preferredName "Plant ID"@en ;
+    bamm:description "The identification of a production plant in an equipment address."@en ;
+    bamm:exampleValue "3740" ;
+    bamm:see <http://bos.ch/i40/core/equipment#plantId> ;
+    bamm:characteristic :PlantId .
+
+:lineId a bamm:Property ;
+    bamm:preferredName "Line ID"@en ;
+    bamm:preferredName "Eindeutige Linien-ID"@de ;
+    bamm:description "The identification of a production line."@en ;
+    bamm:see <http://bos.ch/i40/core/equipment#uniqueLineId> ;
+    bamm:characteristic :EquipmentAddressSection .
+
+:stationId a bamm:Property ;
+    bamm:preferredName "Station ID"@en ;
+    bamm:preferredName "Stations-ID"@de ;
+    bamm:description "The identification of a production station."@en ;
+    bamm:exampleValue "E751" ;
+    bamm:see <http://bos.ch/i40/core/equipment#stationId> ;
+    bamm:characteristic :EquipmentAddressSection .
+
+:stationIndex a bamm:Property ;
+    bamm:preferredName "Station Index"@en ;
+    bamm:preferredName "Stationsindex"@de ;
+    bamm:description "The instance of a production station."@en ;
+    bamm:see <http://bos.ch/i40/core/equipment#stationIndex> ;
+    bamm:characteristic :StationIndex .
+
+:workPosition a bamm:Property ;
+    bamm:preferredName "Work Position"@en ;
+    bamm:description "The work position describes each individual process operation in the MES and identifies the equipment which executes the operation."@en ;
+    bamm:characteristic :EquipmentAddressSection .
+
+:toolPosition a bamm:Property ;
+    bamm:preferredName "Tool Position"@en ;
+    bamm:description "The tool position subdivides working positions into further intermediate steps and identifies the equipment which executes these steps."@en ;
+    bamm:characteristic :EquipmentAddressSection .
+
+:PlantId a bamm-c:Trait ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint [
+        a bamm-c:RegularExpressionConstraint ;
+        bamm:value "[0-9A-Z]{4}"
+    ] .
+
+:EquipmentAddressSection a bamm-c:Trait ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint [
+        a bamm-c:RegularExpressionConstraint ;
+        bamm:value "[0-9]{1,4}"
+    ] .
+
+:StationIndex a bamm-c:Code ;
+    bamm:preferredName "Station Index"@en ;
+    bamm:dataType xsd:positiveInteger  .
+
+:Equipment a bamm:AbstractEntity ;
+    bamm:preferredName "Equipment"@en ;
+    bamm:description "Definition of an equipment."@en ;
+    bamm:properties ( :locationAddress
+                      [ bamm:property :mesLocationId ; bamm:optional true ]
+                      [ bamm:property dcv:twinReference ; bamm:optional true ] ) .
+
+:locationAddress a bamm:Property ;
+    bamm:preferredName "Location ID"@en ;
+    bamm:description "The identification of an equipment in the form of a unique address."@en ;
+    bamm:characteristic :EquipmentAddressEntity .
+
+:mesLocationId a bamm:Property ;
+   bamm:preferredName "MES Location Id"@en ;
+   bamm:description "The location id from MES for the equipment."@en ;
+   bamm:characteristic [
+      a bamm-c:Trait ;
+      bamm-c:baseCharacteristic dcv:StringCode ;
+      bamm-c:constraint [
+         a bamm-c:RegularExpressionConstraint ;
+         bamm:value "([0-9]{4}\\.){3}([0-9]\\.){1}([0-9]{4}\\.){1}([0-9]{4}){1}"
+      ]
+   ] .
+
+:EquipmentAddressEntity a bamm-c:SingleEntity ;
+    bamm:dataType :EquipmentAddress .
+
+:parentEquipment a bamm:Property ;
+    bamm:description "The reference to the parent equipment."@en ;
+    bamm:characteristic :EquipmentAddressEntity .
+
+:childEquipmentCount a bamm:Property ;
+   bamm:preferredName "Child Equipment Count"@en ;
+   bamm:description "The amount of sub-equipments included in the setup of an equipment."@en ;
+   bamm:characteristic [
+      a bamm-c:Quantifiable ;
+      bamm:dataType xsd:positiveInteger
+   ] .
+
+:ParentEquipment a bamm:AbstractEntity ;
+   bamm:extends :Equipment ;
+   bamm:description "An Equipment which contains child equipments and is represented by a digital twin."@en ;
+   bamm:properties ( :childEquipmentCount ) .

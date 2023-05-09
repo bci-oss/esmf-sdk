@@ -1,0 +1,27 @@
+    #
+# Aspect model for plants
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.location:0.0.1#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Countries
+    a                  bamm:Aspect ;
+    bamm:name          "Countries" ;
+    bamm:preferredName "Countries"@en ;
+    bamm:description   "Aspect for countries."@en ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Country List"@en ;
+    bamm:description    "A list of countries."@en ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "Countries" ;
+                          bamm:dataType :Country ] .

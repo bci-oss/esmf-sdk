@@ -1,0 +1,101 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProcessParameters
+    a                  bamm:Aspect ;
+    bamm:name          "ProcessParameters" ;
+    bamm:preferredName "Process Parameters"@en ;
+    bamm:description   "Aspect for process parameters for processed parts."@en ;
+    bamm:properties    ( :root :parameters ) ;
+    bamm:operations    ( ) .
+
+:root
+    a                   bamm:Property ;
+    bamm:name           "root" ;
+    bamm:preferredName  "Root entry reference"@en ;
+    bamm:description    "Reference to root part of a list of bill of materials"@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "RootEntity" ;
+                          bamm:dataType <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#ProcessedPart> ] .
+
+:parameters
+    a                   bamm:Property ;
+    bamm:name           "parameters" ;
+    bamm:preferredName  "Parameters"@en ;
+    bamm:preferredName  "Parameter"@de ;
+    bamm:description    "A list of process parameters in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Parameter."@de ;
+    bamm:characteristic [ a             bamm-c:Set ;
+                          bamm:name     "ProcessParameter" ;
+                          bamm:dataType :ProcessParameter ] .
+
+:ProcessParameter
+    a                  bamm:Entity ;
+    bamm:name          "ProcessParameter" ;
+    bamm:preferredName "Process Parameter"@en ;
+    bamm:preferredName "Prozess-Parameter"@de ;
+    bamm:description   "Process parameter with value."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#uniquePartId>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#productionTime>
+                         :parameterName :parameterValue
+                         [bamm:property :unitOfMeasure; bamm:optional true ]
+                         :paramDataType
+                         :paramMinTolerance
+                         :paramMaxTolerance
+                       ) .
+
+:parameterName
+    a                   bamm:Property ;
+    bamm:name           "parameterName" ;
+    bamm:preferredName  "Parameter Name"@en ;
+    bamm:description    "Name of process parameter"@en ;
+    bamm:characteristic bamm-c:Text .
+
+:parameterValue
+    a                   bamm:Property ;
+    bamm:name           "parameterValue" ;
+    bamm:preferredName  "Parameter Value"@en ;
+    bamm:description    "Value of process parameter"@en ;
+    bamm:characteristic bamm-c:Text .
+
+:unitOfMeasure
+    a                   bamm:Property ;
+    bamm:name           "unitOfMeasure" ;
+    bamm:preferredName  "Unit of Measure"@en ;
+    bamm:description    "Unit of measure of this parameter"@en ;
+    bamm:characteristic bamm-c:UnitReference .
+
+:paramDataType
+    a                   bamm:Property ;
+    bamm:name           "paramDataType" ;
+    bamm:preferredName  "Parameter Data Type"@en ;
+    bamm:description    "Data type of parameter"@en ;
+    bamm:characteristic bamm-c:Text .
+
+:paramMinTolerance
+    a                   bamm:Property ;
+    bamm:name           "paramMinTolerance" ;
+    bamm:preferredName  "Parameter Minimum Tolerance"@en ;
+    bamm:description    "Minimum tolerance of parameter"@en ;
+    bamm:characteristic :Tolerance .
+
+:paramMaxTolerance
+    a                   bamm:Property ;
+    bamm:name           "paramMaxTolerance" ;
+    bamm:preferredName  "Parameter Maximum Tolerance"@en ;
+    bamm:description    "Maximum tolerance of parameter"@en ;
+    bamm:characteristic :Tolerance .
+
+:Tolerance
+    a bamm-c:Quantifiable ;
+    bamm:name "Tolerance" ;
+    bamm:dataType xsd:float ;
+    bamm-c:unit unit:piece .

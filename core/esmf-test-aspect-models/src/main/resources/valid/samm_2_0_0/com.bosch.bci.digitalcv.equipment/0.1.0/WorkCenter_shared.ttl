@@ -1,0 +1,54 @@
+    #
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#> .
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+
+:WorkCenter
+    a                samm:AbstractEntity ;
+    samm:extends     :ParentEquipment ;
+    samm:description "Definition of an equipment which is always placed in a plant and hence has a parent equipment."@en ;
+    samm:properties  ( :name :parentEquipment ) .
+
+:Line
+    a                  samm:Entity ;
+    samm:extends       :WorkCenter ;
+    samm:preferredName "Production Line"@en ;
+    samm:preferredName "Produktionslinie"@de ;
+    samm:description   "Definition of a production line."@en ;
+    samm:properties    ( ) .
+
+:name
+    a                   samm:Property ;
+    samm:preferredName  "Work Center Name"@en ;
+    samm:description    "The name of the work center."@en ;
+    samm:characteristic :WorkCenterName .
+
+:WorkCenterName
+    a                         samm-c:Trait ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:value "[A-Za-z0-9\\s,]+" ] .
+
+:Pool
+    a                  samm:Entity ;
+    samm:preferredName "Production Pool"@en ;
+    samm:description   "Definition of a production pool."@en ;
+    samm:properties    ( ) .
+
+:poolId
+    a                   samm:Property ;
+    samm:description    "The identifier of a production pool."@en ;
+    samm:characteristic :PoolId .
+
+:PoolId
+    a                         samm-c:Trait ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:value "[0-9]{4}" ] .

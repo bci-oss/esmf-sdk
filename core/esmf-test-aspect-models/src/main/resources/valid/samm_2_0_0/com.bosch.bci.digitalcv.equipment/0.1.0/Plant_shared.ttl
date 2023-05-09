@@ -1,0 +1,34 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#> .
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+
+:Plant a samm:Entity ;
+    samm:extends :ParentEquipment ;
+    samm:preferredName "Plant"@en ;
+    samm:preferredName "Fabrik"@de ;
+    samm:description "Definition of a production plant."@en ;
+    samm:properties ( :plantName ) .
+
+:plantName a samm:Property ;
+    samm:preferredName "Plant Name"@en ;
+    samm:preferredName "Fabrikname"@de ;
+    samm:description "The identification of a production plant in the form of a short code name."@en ;
+    samm:exampleValue "HoP2" ;
+    samm:see <http://bos.ch/i40/core/equipment#plantName> ;
+    samm:see <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=442656575>;
+    samm:characteristic :PlantCode .
+
+:PlantCode a samm-c:Trait ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint [
+        a samm-c:RegularExpressionConstraint ;
+        samm:value "[A-Za-z0-9]{4}"
+    ] .

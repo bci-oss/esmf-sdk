@@ -1,0 +1,30 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+
+:WorkUnit a bamm:AbstractEntity ;
+    bamm:extends :ParentEquipment ;
+    bamm:description "Definition of an equipment which is always placed in a line and hence has a parent equipment."@en ;
+    bamm:properties ( :parentEquipment
+                      #work around for the fact that the line number within a plant is not unique and the line name is required for identification
+                      [ bamm:property :workCenterName ; bamm:optional true ]) .
+
+:Station a bamm:Entity ;
+    bamm:extends :WorkUnit ;
+    bamm:preferredName "Station"@en ;
+    bamm:preferredName "Station"@de ;
+    bamm:description "Definition of a production station."@en ;
+    bamm:properties (  ) .
+
+:workCenterName a bamm:Property ;
+    bamm:preferredName "Work Center Name"@en ;
+    bamm:description "The name of the work center where the work unit is related to."@en ;
+    bamm:characteristic :WorkCenterName .

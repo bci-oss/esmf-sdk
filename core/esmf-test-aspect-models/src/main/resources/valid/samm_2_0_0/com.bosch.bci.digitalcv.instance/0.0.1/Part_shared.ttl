@@ -1,0 +1,63 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProcessedPart
+    a                  bamm:Entity ;
+    bamm:name          "ProcessedPart" ;
+    bamm:preferredName "ProcessedPart"@en ;
+    bamm:preferredName "Verarbeites Teil"@de ;
+    bamm:description   "Definition of a part processed in manufacturing."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialDescription>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialClass>
+                         [ bamm:property <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialClassDescription>; bamm:optional true ]
+                         [ bamm:property <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#batchId>; bamm:optional true ]
+                         [ bamm:property <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#batchDescription>; bamm:optional true ]
+                         :uniquePartId :productionTime
+                         [ bamm:property :isAssembledFrom; bamm:optional true ] ) .
+
+:uniquePartId
+    a                   bamm:Property ;
+    bamm:name           "uniquePartid" ;
+    bamm:preferredName  "Unique Part ID"@en ;
+    bamm:preferredName  "Teilenummer"@de ;
+    bamm:description    "The identification of the processed part based on the MES part number."@en ;
+    bamm:characteristic :PartNumber .
+
+:PartNumber
+        a                 bamm-c:Trait ;
+                          bamm:name         "PartNumberConstraint" ;
+                          bamm-c:baseCharacteristic [ a bamm-c:Code ;
+                                                      bamm:name          "PartNumberCode" ;
+                                                      bamm:preferredName "Part Number"@en ;
+                                                      bamm:dataType xsd:string
+                                            ] ;
+                          bamm-c:constraint [ a                         bamm-c:RegularExpressionConstraint ;
+                                              bamm:name                 "PartNumberPattern" ;
+                                              bamm:value                "[A-Z0-9]{10,12}" ] .
+# example F03Z2000NU01, F03Z000196
+
+:productionDate
+    a                   bamm:Property ;
+    bamm:name           "productionDate" ;
+    bamm:preferredName  "Production Date"@en ;
+    bamm:description    "Date, when the part was produced"@en ;
+    bamm:characteristic bamm-c:Timestamp .
+
+:isAssembledFrom
+    a                   bamm:Property ;
+    bamm:name           "isAssembledFrom" ;
+    bamm:preferredName  "Is Assembled From"@en ;
+    bamm:description    "A list of processed parts this part is assembled from."@en ;
+    bamm:characteristic [ a             bamm-c:Set ;
+                          bamm:name     "PartNumbers" ;
+                          bamm:dataType :PartNumber ] .
+

@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.4#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:batchNumber a bamm:Property ;
+    bamm:preferredName "Batch Number"@en ;
+    bamm:preferredName "Chargennummer"@de ;
+    bamm:description "The identification of the batch on the MES batch identifier."@en ;
+    bamm:characteristic [
+        a bamm-c:Trait ;
+        bamm-c:baseCharacteristic [
+            a bamm-c:Code ;
+            bamm:preferredName "Batch ID"@en ;
+            bamm:dataType xsd:string
+        ] ;
+        bamm-c:constraint [
+            a bamm-c:RegularExpressionConstraint ;
+            bamm:value "[A-Z0-9_-]+"
+        ]
+    ] .
+
+:batchDescription a bamm:Property ;
+    bamm:preferredName "Batch Description"@en ;
+    bamm:preferredName "Chargenbeschreibung"@de ;
+    bamm:description "Description of the batch."@en ;
+    bamm:characteristic bamm-c:Text .

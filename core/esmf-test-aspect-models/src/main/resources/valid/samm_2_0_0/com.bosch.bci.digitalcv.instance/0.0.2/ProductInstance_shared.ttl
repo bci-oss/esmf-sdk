@@ -1,0 +1,26 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+
+:ProductInstance
+    a                  bamm:Entity ;
+    bamm:name          "ProductInstance" ;
+    bamm:preferredName "Product Instance"@en ;
+    bamm:preferredName "Produktinstanz"@de ;
+    bamm:description   "Instance of a concrete roduct based on a product type."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#materialNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#materialDescription>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#batchNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#batchDescription>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#uniquePartId>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#productionTime>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#serialNumber> ) .
+

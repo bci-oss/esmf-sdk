@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#> .
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+
+:WorkCell a samm:Entity ;
+   samm:extends :Equipment ;
+   samm:description "Definition of an equipment which is always placed in a station and hence has a parent equipment."@en ;
+   samm:properties ( :parentEquipment
+                     dcv:processName ) .

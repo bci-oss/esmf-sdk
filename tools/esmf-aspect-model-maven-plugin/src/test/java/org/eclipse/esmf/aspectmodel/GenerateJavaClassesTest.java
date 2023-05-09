@@ -35,6 +35,15 @@ public class GenerateJavaClassesTest extends AspectModelMojoTest {
    }
 
    @Test
+   public void testGenerateJavaClassesMultipleAspectModels() throws Exception {
+      final File testPom = getTestFile( "src/test/resources/generate-java-classes.xml" );
+      final Mojo generateJavaClasses = lookupMojo( "generateJavaClasses", testPom );
+      assertThatCode( generateJavaClasses::execute ).doesNotThrowAnyException();
+
+      final String packagePath = "org/eclipse/esmf/test";
+   }
+
+   @Test
    public void testGenerateJavaClassesCustomPackageName() throws Exception {
       final File testPom = getTestFile( "src/test/resources/generate-java-classes-pom-custom-package-name.xml" );
       final Mojo generateJavaClasses = lookupMojo( "generateJavaClasses", testPom );

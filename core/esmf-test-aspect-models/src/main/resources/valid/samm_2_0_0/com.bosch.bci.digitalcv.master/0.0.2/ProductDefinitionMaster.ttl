@@ -1,0 +1,175 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.master:0.0.2#>.
+@prefix dcv:    <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+# @prefix eqip:   <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix type:   <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductDefinitionMaster
+    a                  bamm:Aspect ;
+    bamm:name          "ProductDefinitionMaster" ;
+    bamm:preferredName "Product Definition Master"@en ;
+    bamm:description   "Aspect for product definition master data."@en ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Product Definition Master Data"@en ;
+    bamm:description    "A list of product definition sorted in chronological order."@en ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProductDefMasterData" ;
+                          bamm:dataType :ProductDefinition ] .
+
+:ProductDefinition
+    a                  bamm:Entity ;
+    bamm:name          "ProductDefinition" ;
+    bamm:preferredName "Product Definition"@en ;
+    bamm:preferredName "Produktdefinition"@de ;
+    bamm:description   "Definition of a product based on a SAP material number."@en ;
+    bamm:properties    ( :productHierarchyId
+                         :product ) .
+
+:product
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Product Definition Master Data"@en ;
+    bamm:description    "A list of product definition sorted in chronological order."@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "ProductData" ;
+                          bamm:dataType :Product ] .
+
+:Product
+    a                  bamm:Entity ;
+    bamm:name          "Product" ;
+    bamm:preferredName "Product"@en ;
+    bamm:preferredName "Produkt"@de ;
+    bamm:description   "Product based on a SAP part number."@en ;
+    bamm:properties    ( :partNumber
+                         [ bamm:property type:productDescription; bamm:optional true ]
+                         :hasSystemID
+                         :hasPlantSAP
+                         :hasProductTypeSAP ) .
+
+:partNumber
+    a                   bamm:Property ;
+    bamm:name           "partNumber" ;
+    bamm:preferredName  "Part Number"@en ;
+    bamm:preferredName  "Materialnummer"@de ;
+    bamm:description    "The identification of the product based on the SAP material number."@en ;
+    bamm:exampleValue   "F03Z12345602" ;
+    bamm:characteristic type:MaterialNumber .
+
+:productHierarchyId
+    a                   bamm:Property ;
+    bamm:name           "productHierarchyId" ;
+    bamm:preferredName  "Product Hierarchy ID"@en ;
+    bamm:preferredName  "Produkthierarchie ID"@de ;
+    bamm:description    "The identification of the product hierarchy in master data."@en ;
+    bamm:exampleValue   "000010001100000110" ;
+    bamm:characteristic :ProductHierarchyId .
+
+:ProductHierarchyId
+    a                         bamm-c:Trait ;
+    bamm:name                 "ProductHierarchyId" ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "ProductHierarchyPattern" ;
+                                bamm:value "[0-9]{6,18}" ] .
+
+:hasSystemID
+    a                   bamm:Property ;
+    bamm:name           "hasSystemID" ;
+    bamm:preferredName  "has System ID"@en ;
+    bamm:preferredName  "hat System-ID"@de ;
+    bamm:description    "The identification of SAP system."@en ;
+    bamm:exampleValue   "SAPKP10130" ;
+    bamm:see <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=433805519>;
+    bamm:characteristic :SAPSystemID .
+
+:SAPSystemID
+    a                         bamm-c:Trait ;
+    bamm:name                 "SAPSystemID" ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "SAPSystemIDPattern" ;
+                                bamm:value "SAP0[A-Z0-9]{3}[A-Z0-9]{3}" ] .
+
+:hasPlantSAP
+    a                   bamm:Property ;
+    bamm:name           "plants" ;
+    bamm:preferredName  "Plants"@en ;
+    bamm:description    "A list of plants where product is being produced."@en ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "PlantList" ;
+                          bamm:dataType :PlantReference ] .
+
+:PlantReference
+    a                  bamm:Entity ;
+    bamm:name          "PlantReference" ;
+    bamm:preferredName "Plant Reference"@en ;
+    bamm:preferredName "Werksreferenz"@de ;
+    bamm:description   "Reference for a production plant."@en ;
+    bamm:properties    ( :plantId ) .
+
+:hasProductTypeSAP
+    a                   bamm:Property ;
+    bamm:name           "hasProductTypeSAP" ;
+    bamm:preferredName  "Product Type"@en ;
+    bamm:description    "Product type of product definition."@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "ProductData" ;
+                          bamm:dataType :ProductTypeReference ] .
+
+:ProductTypeReference
+    a                  bamm:Entity ;
+    bamm:name          "ProductTypeReference" ;
+    bamm:preferredName "Product Type Reference"@en ;
+    bamm:preferredName "Produkttypreferenz"@de ;
+    bamm:description   "Reference to product type."@en ;
+    bamm:properties    ( :productType ) .
+
+:productType
+    a                   bamm:Property ;
+    bamm:name           "productType" ;
+    bamm:preferredName  "product type"@en ;
+    bamm:preferredName  "Produkttyp"@de ;
+    bamm:description    "Product or material type from SAP."@en ;
+    bamm:exampleValue   "HALB" ;
+    bamm:see <https://inside-docupedia.bosch.com/confluence/display/BMDIP/Material+Type>;
+    bamm:characteristic :ProductType .
+
+:ProductType
+    a                         bamm-c:Trait ;
+    bamm:name                 "ProductType" ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "SAPProductTypePattern" ;
+                                bamm:value "[A-Z0-9]{4}" ] .
+
+:plantId
+    a                   bamm:Property ;
+    bamm:name           "plantId" ;
+    bamm:preferredName  "Plant ID"@en ;
+    bamm:preferredName  "Fabrikcode"@de ;
+    bamm:description    "The identification of a production plant identifier from SAP"@en ;
+    bamm:exampleValue   "HoP2" ;
+    bamm:see            <http://bos.ch/i40/core/equipment#plantId> ;
+    bamm:see            <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=442656575>;
+    bamm:characteristic :PlantCode .
+
+:PlantCode
+    a                         bamm-c:Trait ;
+    bamm:name                 "PlantCode" ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "PlantCodePattern" ;
+                                bamm:value "[A-Za-z0-9]{3,4}" ] .

@@ -1,0 +1,10 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv:0.0.1#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:StringCode a bamm-c:Code ;
+            bamm:name          "StringCode" ;
+            bamm:dataType      xsd:string .

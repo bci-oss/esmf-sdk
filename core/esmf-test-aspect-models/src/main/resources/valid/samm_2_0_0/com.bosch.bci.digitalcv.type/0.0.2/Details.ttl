@@ -1,0 +1,32 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Details
+    a                  bamm:Aspect ;
+    bamm:name          "Details" ;
+    bamm:preferredName "Product Type Details"@en ;
+    bamm:preferredName "Produkttypdetails"@de ;
+    bamm:description   "Aspect for details of a single product type properties."@en ;
+    bamm:description   "Aspekt welcher die Details eines gewissen Produkttyps liefert"@de ;
+    bamm:properties    ( :productType ) ;
+    bamm:operations    ( ) .
+
+:productType
+    a                   bamm:Property ;
+    bamm:name           "productType" ;
+    bamm:preferredName  "Product Type"@en ;
+    bamm:preferredName  "Produkttype"@de ;
+    bamm:description    "Product type details."@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity;
+                          bamm:name     "ProductType" ;
+                          bamm:dataType <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#ProductType> ] .
+
+

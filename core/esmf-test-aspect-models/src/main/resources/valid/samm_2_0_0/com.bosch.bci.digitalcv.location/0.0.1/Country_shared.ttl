@@ -1,0 +1,56 @@
+# Aspect model for getting list of countries
+# based on Ref-MDS dataset
+# https://inside.bosch.com/irj/portal/fiori#MD_REFMDS_Data_Rep-display&/MDOBJECT_SET/E103
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.location:0.0.1#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+:Country a bamm:Entity ;
+       bamm:name          "Country" ;
+       bamm:preferredName "Country"@en ;
+       bamm:preferredName "Land"@de ;
+       bamm:description   "A world country with standard ISO codes"@en ;
+       bamm:properties    ( :countryCode
+                            :countryName
+                            :countryFullName
+         ) .
+
+:countryCode
+    a                   bamm:Property ;
+    bamm:name           "countryCode" ;
+    bamm:preferredName  "Country Code"@en ;
+    bamm:description    "The identification of a Country with ISO code."@en ;
+    bamm:exampleValue   "DE" ;
+    bamm:characteristic :CountryID .
+
+:CountryID
+    a                         bamm-c:Trait ;
+    bamm:name                 "CountryID" ;
+    bamm-c:baseCharacteristic  dcv:StringCode ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "CountryIdPattern" ;
+                                bamm:value "[A-Z]{2}" ] .
+
+# corresponds to Ref-MDS short name
+:countryName
+    a                   bamm:Property ;
+    bamm:name           "countryName" ;
+    bamm:preferredName  "Country Name"@en ;
+    bamm:preferredName  "Länderkurzname"@de ;
+    bamm:description    "The official short name of the country."@en ;
+    bamm:exampleValue   "Germany" ;
+    bamm:characteristic bamm-c:Text .
+
+# corresponds to Ref-MDS official full form
+:countryFullName
+    a                   bamm:Property ;
+    bamm:name           "countryFullName" ;
+    bamm:preferredName  "Country Full Name"@en ;
+    bamm:preferredName  "Länderlangname"@de ;
+    bamm:description    "The official full name of the country."@en ;
+    bamm:exampleValue   "the Federal Republic of Germany" ;
+    bamm:characteristic bamm-c:Text .

@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Materials a bamm:Aspect ;
+    bamm:preferredName "Product Type Bill of Material"@en ;
+    bamm:description "Aspect for bill of material for product instance."@en ;
+    bamm:properties ( :items ) ;
+    bamm:operations ( ) .
+
+:items a bamm:Property ;
+    bamm:preferredName "Materials"@en ;
+    bamm:preferredName "Materialien"@de ;
+    bamm:description "A list of materials sorted in chronological order."@en ;
+    bamm:description "Eine Liste mit chronologisch sortierten Materialien."@de ;
+    bamm:characteristic [
+        a bamm-c:SortedSet ;
+        bamm:dataType :Material
+    ] .

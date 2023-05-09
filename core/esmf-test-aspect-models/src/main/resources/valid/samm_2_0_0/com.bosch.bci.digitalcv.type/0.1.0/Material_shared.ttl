@@ -1,0 +1,130 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#>.
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Material a samm:Entity ;
+    samm:preferredName "Material"@en ;
+    samm:preferredName "Material"@de ;
+    samm:description "Definition of a material as type from SAP."@en ;
+    samm:properties ( :materialNumber
+                      :parentMaterialNumber
+                      :materialDescription
+                      #:materialType
+                      :materialClass
+                      [ samm:property :materialClassDescription; samm:optional true ]
+                      [ samm:property :quantity; samm:optional true ]
+                      [ samm:property :unitOfMeasure; samm:optional true ]
+                      [ samm:property :isAssembledFrom; samm:optional true ] ) .
+
+:isAssembledFrom a samm:Property ;
+    samm:preferredName "Is Assembled From"@en ;
+    samm:description "A list of materials this material is assembled from."@en ;
+    samm:characteristic [
+        a samm-c:SortedSet ;
+        samm-c:elementCharacteristic :MaterialNumber
+    ] .
+
+:materialClass a samm:Property ;
+    samm:preferredName "Material Class"@en ;
+    samm:preferredName "Materialklasse"@de ;
+    samm:description "The classification of material."@en ;
+    samm:characteristic [
+        a samm-c:Code ;
+        samm:preferredName "Material Class"@en ;
+        samm:dataType xsd:string
+    ] .
+
+:materialNumber a samm:Property ;
+    samm:preferredName "Material Number"@en ;
+    samm:preferredName "Materialnummer"@de ;
+    samm:description "The identification of the product based on the SAP material number."@en ;
+    samm:exampleValue "F03Z12345602" ;
+    samm:characteristic :MaterialNumber .
+
+:parentMaterialNumber a samm:Property ;
+    samm:preferredName "Parent Material Number"@en ;
+    samm:preferredName "Übergeordnetematerialnummer"@de ;
+    samm:description "The identification of the parent material in the SAP BoM."@en ;
+    samm:exampleValue "F03Z20009V" ;
+    samm:characteristic :MaterialNumber .
+
+:MaterialNumber a samm-c:Trait ;
+    samm-c:baseCharacteristic [
+        a samm-c:Code ;
+        samm:dataType xsd:string
+    ] ;
+    samm-c:constraint [
+        a samm-c:RegularExpressionConstraint ;
+        samm:value "[A-Z0-9]{9,13}"
+    ] .
+
+:materialDescription a samm:Property ;
+    samm:preferredName "Material Description"@en ;
+    samm:preferredName "Materialbeschreibung"@de ;
+    samm:description "Description of the product ."@en ;
+    samm:characteristic samm-c:MultiLanguageText .
+
+:materialType a samm:Property ;
+    samm:preferredName "Material Type"@en ;
+    samm:preferredName "Materialnummer"@de ;
+    samm:description "The identification of the product based on the SAP material number."@en ;
+    samm:characteristic [
+        a samm-c:SingleEntity ;
+        samm:dataType :MaterialType
+    ] .
+
+:MaterialType a samm:Entity ;
+    samm:preferredName "Material Type"@en ;
+    samm:description "Type of material from SAP"@en ;
+    samm:properties ( :materialTypeCode :materialTypeDescription ) .
+
+:materialTypeCode a samm:Property ;
+    samm:preferredName "Material Type Code"@en ;
+    samm:preferredName "Materialtyp"@de ;
+    samm:description "The identification of the material type from SAP."@en ;
+    samm:exampleValue "HALB" ;
+    samm:characteristic :MaterialTypeCode .
+
+:MaterialTypeCode a samm-c:Trait ;
+    samm-c:baseCharacteristic [
+        a samm-c:Code ;
+        samm:preferredName "Material Type Code"@en ;
+        samm:dataType xsd:string
+    ] ;
+    samm-c:constraint [
+        a samm-c:RegularExpressionConstraint ;
+        samm:value "[A-Z0-9]{4}"
+    ] .
+
+:materialTypeDescription a samm:Property ;
+    samm:preferredName "Material Type Description"@en ;
+    samm:preferredName "Materialtypenbeschreibung"@de ;
+    samm:description "Description of the material type."@en ;
+    samm:characteristic samm-c:MultiLanguageText .
+
+:materialClassDescription a samm:Property ;
+    samm:preferredName "Material Class Description"@en ;
+    samm:preferredName "Materialklassenbeschreibung"@de ;
+    samm:description "Description of the material or product type class."@en ;
+    samm:characteristic samm-c:Text .
+
+:unitOfMeasure a samm:Property ;
+    samm:preferredName "Unit of Measure"@en ;
+    samm:description "Unit of measure of this parameter"@en ;
+    samm:characteristic samm-c:UnitReference .
+
+:quantity a samm:Property ;
+    samm:preferredName "Quantity"@en ;
+    samm:description "Quantity of materials in material"@en ;
+    samm:characteristic :Quantity .
+
+:Quantity a samm-c:Quantifiable ;
+    samm:dataType xsd:float ;
+    samm-c:unit unit:piece .

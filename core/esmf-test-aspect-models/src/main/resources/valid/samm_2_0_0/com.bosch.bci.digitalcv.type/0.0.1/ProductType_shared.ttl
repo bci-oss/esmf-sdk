@@ -1,0 +1,40 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductType
+    a                  bamm:Entity ;
+    bamm:name          "ProductType" ;
+    bamm:preferredName "Product Type"@en ;
+    bamm:preferredName "Produkttyp"@de ;
+    bamm:description   "Definition of a product based on a SAP material number."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#materialDescription>
+                         :productClass :productSubClass :statisticsGroup ) .
+
+:productClass
+    a                   bamm:Property ;
+    bamm:name           "productClass" ;
+    bamm:preferredName  "Product Class"@en ;
+    bamm:preferredName  "Produktklasse"@de ;
+    bamm:description    "The classification of a product type."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:productSubClass
+    a                   bamm:Property ;
+    bamm:name           "productSubClass" ;
+    bamm:preferredName  "Product Sub-Class"@en ;
+    bamm:preferredName  "Produkt-Unterklasse"@de ;
+    bamm:description    "The sub-classification of a product type."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:statisticsGroup
+    a                   bamm:Property ;
+    bamm:name           "statisticsGroup" ;
+    bamm:preferredName  "Statistics Group"@en ;
+    bamm:preferredName  "Statistikgruppe"@de ;
+    bamm:description    "A categorization of product types."@en ;
+    bamm:characteristic bamm-c:Text .

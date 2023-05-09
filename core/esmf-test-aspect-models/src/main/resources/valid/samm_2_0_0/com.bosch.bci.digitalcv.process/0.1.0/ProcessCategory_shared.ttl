@@ -1,0 +1,48 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.process:0.1.0#> .
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+
+:ProcessCategory a samm:Entity ;
+          samm:name "ProcessCategory" ;
+          samm:description "Definition of an equipment which is always placed in a station and hence has a parent equipment."@en ;
+          samm:properties ( :parentProcessCategoryId
+                            :processCategoryId
+                            :processCategoryName
+                            :processCategoryDescription ) .
+
+:processCategoryId a samm:Property ;
+            samm:name "processCategoryId" ;
+            samm:description "The identification of a process category."@en ;
+            samm:characteristic :ProcessCategoryId .
+
+:ProcessCategoryId a samm-c:Trait ;
+            samm:name "ProcessCategoryId" ;
+            samm-c:baseCharacteristic dcv:StringCode ;
+            samm-c:constraint [
+                  a samm-c:RegularExpressionConstraint ;
+                  samm:name  "BEOProcessCategoryIdPattern" ;
+                  samm:value "[0-9]\\.[0-9][0-9]\\.[0-9][0-9]\\.[0-9][0-9]"
+              ] .
+
+:parentProcessCategoryId a samm:Property ;
+                   samm:name "parentProcessCategoryId" ;
+                   samm:description "The identification of the parent process category."@en ;
+                   samm:characteristic :ProcessCategoryId .
+
+:processCategoryName a samm:Property ;
+              samm:name "processCategoryName" ;
+              samm:description "The name of a process category."@en ;
+              samm:characteristic samm-c:MultiLanguageText .
+
+:processCategoryDescription a samm:Property ;
+                     samm:name "processCategoryDescription" ;
+                     samm:description "Textual description of a process category."@en ;
+                     samm:characteristic samm-c:MultiLanguageText .

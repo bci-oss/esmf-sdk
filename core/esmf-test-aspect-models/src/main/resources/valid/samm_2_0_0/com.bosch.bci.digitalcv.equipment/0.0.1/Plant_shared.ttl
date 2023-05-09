@@ -1,0 +1,34 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+
+:Plant a bamm:Entity ;
+    bamm:extends :ParentEquipment ;
+    bamm:preferredName "Plant"@en ;
+    bamm:preferredName "Fabrik"@de ;
+    bamm:description "Definition of a production plant."@en ;
+    bamm:properties ( :plantName ) .
+
+:plantName a bamm:Property ;
+    bamm:preferredName "Plant Name"@en ;
+    bamm:preferredName "Fabrikname"@de ;
+    bamm:description "The identification of a production plant in the form of a short code name."@en ;
+    bamm:exampleValue "HoP2" ;
+    bamm:see <http://bos.ch/i40/core/equipment#plantName> ;
+    bamm:see <https://inside-docupedia.bosch.com/confluence/pages/viewpage.action?pageId=442656575>;
+    bamm:characteristic :PlantCode .
+
+:PlantCode a bamm-c:Trait ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint [
+        a bamm-c:RegularExpressionConstraint ;
+        bamm:value "[A-Za-z0-9]{4}"
+    ] .

@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Plants a bamm:Aspect ;
+    bamm:preferredName "Production Plants"@en ;
+    bamm:description "Aspect for production plants."@en ;
+    bamm:properties ( :items ) ;
+    bamm:operations ( ) .
+
+:items a bamm:Property ;
+    bamm:preferredName  "Plant List"@en ;
+    bamm:description    "A list of plant descriptions."@en ;
+    bamm:characteristic [
+        a bamm-c:SortedSet ;
+        bamm:dataType :Plant
+    ] .

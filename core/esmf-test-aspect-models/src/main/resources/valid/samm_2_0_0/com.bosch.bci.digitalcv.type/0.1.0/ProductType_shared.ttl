@@ -1,0 +1,68 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#>.
+@prefix dcv: <urn:samm:com.bosch.bci.digitalcv:0.1.0#>.
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductType a samm:Entity ;
+    samm:preferredName "Product Type"@en ;
+    samm:preferredName "Produkttyp"@de ;
+    samm:description "Definition of a product based on a SAP material number."@en ;
+    samm:properties ( :materialNumber
+                      [ samm:property :productDescription; samm:optional true ]
+                      :productClass
+                      :productClassDescription
+                      :productSubClass
+                      :productSubClassDescription
+                      :statisticsGroup
+                      :statisticsGroupDescription
+                      [ samm:property :isAssembledFrom; samm:optional true ]
+                      [ samm:property dcv:twinReference; samm:optional true ] ) .
+
+:productDescription a samm:Property ;
+    samm:preferredName "Product Description"@en ;
+    samm:preferredName "Produktbeschreibung"@de ;
+    samm:description "Description of the product."@en ;
+    samm:characteristic samm-c:MultiLanguageText .
+
+:productClass a samm:Property ;
+    samm:preferredName "Product Class"@en ;
+    samm:preferredName "Produktklasse"@de ;
+    samm:description "The classification of a product type."@en ;
+    samm:characteristic samm-c:Text .
+
+:productClassDescription a samm:Property ;
+    samm:preferredName "Product Class Description"@en ;
+    samm:preferredName "Produktklassenbeschreibung"@de ;
+    samm:description "Description of the product class."@en ;
+    samm:characteristic samm-c:Text .
+
+:productSubClass a samm:Property ;
+    samm:preferredName "Product Sub-Class"@en ;
+    samm:preferredName "Produkt-Unterklasse"@de ;
+    samm:description "The sub-classification of a product type."@en ;
+    samm:characteristic samm-c:Text .
+
+:productSubClassDescription a samm:Property ;
+    samm:preferredName "Product Sub-Class Description"@en ;
+    samm:preferredName "Produktunterklassenbeschreibung"@de ;
+    samm:description "Description of the product sub-class."@en ;
+    samm:characteristic samm-c:Text .
+
+:statisticsGroup a samm:Property ;
+    samm:preferredName "Statistics Group"@en ;
+    samm:preferredName "Statistikgruppe"@de ;
+    samm:description "A categorization of product types."@en ;
+    samm:characteristic samm-c:Text .
+
+:statisticsGroupDescription a samm:Property ;
+    samm:preferredName "Statistics Group Description"@en ;
+    samm:preferredName "Statistikgruppenbeschreibung"@de ;
+    samm:description "Description of the statistics group."@en ;
+    samm:characteristic samm-c:Text .

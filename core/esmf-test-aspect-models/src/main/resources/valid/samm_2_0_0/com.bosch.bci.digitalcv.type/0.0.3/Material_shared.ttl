@@ -1,0 +1,109 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.type:0.0.3#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Material
+    a                  bamm:Entity ;
+    bamm:name          "Material" ;
+    bamm:preferredName "Material"@en ;
+    bamm:preferredName "Material"@de ;
+    bamm:description   "Definition of a material as type from SAP."@en ;
+    bamm:properties    ( :materialNumber
+                         :parentMaterialNumber
+                         :materialDescription
+                         :materialClass
+                         [ bamm:property :materialClassDescription; bamm:optional true ]
+                         [ bamm:property :quantity; bamm:optional true ]
+                         [ bamm:property :unitOfMeasure; bamm:optional true ]
+                         [ bamm:property :isAssembledFrom; bamm:optional true ]
+                       ) .
+
+:isAssembledFrom
+    a                   bamm:Property ;
+    bamm:name           "isAssembledFrom" ;
+    bamm:preferredName  "Is Assembled From"@en ;
+    bamm:description    "A list of materials this material is assembled from."@en ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "MaterialNumbers" ;
+                          bamm-c:elementCharacteristic :MaterialNumber
+                        ] .
+
+:materialClass
+    a                   bamm:Property ;
+    bamm:name           "materialClass" ;
+    bamm:preferredName  "Material Class"@en ;
+    bamm:preferredName  "Materialklasse"@de ;
+    bamm:description    "The classification of material."@en ;
+    bamm:characteristic [ a                  bamm-c:Code ;
+                          bamm:name          "MaterialClassCode" ;
+                          bamm:preferredName "Material Class"@en ;
+                          bamm:dataType      xsd:string ] .
+
+:materialNumber
+    a                   bamm:Property ;
+    bamm:name           "materialNumber" ;
+    bamm:preferredName  "Material Number"@en ;
+    bamm:preferredName  "Materialnummer"@de ;
+    bamm:description    "The identification of the product based on the SAP material number."@en ;
+    bamm:exampleValue   "F03Z12345602" ;
+    bamm:characteristic :MaterialNumber .
+
+:parentMaterialNumber
+    a                   bamm:Property ;
+    bamm:name           "parentMaterialNumber" ;
+    bamm:preferredName  "Parent Material Number"@en ;
+    bamm:preferredName  "Übergeordnetematerialnummer"@de ;
+    bamm:description    "The identification of the parent material in the SAP BoM."@en ;
+    bamm:exampleValue   "F03Z20009V" ;
+    bamm:characteristic :MaterialNumber .
+
+
+:MaterialNumber
+    a                         bamm-c:Trait ;
+    bamm:name                 "MaterialNumber" ;
+    bamm-c:baseCharacteristic [ a                  bamm-c:Code ;
+                                bamm:name          "MaterialNumberCode" ;
+                                bamm:preferredName "Material Number"@en ;
+                                bamm:dataType      xsd:string ] ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "MaterialNumberPattern" ;
+                                bamm:value "[A-Z0-9]{9,13}" ] .
+
+:materialDescription
+    a                   bamm:Property ;
+    bamm:name           "materialDescription" ;
+    bamm:preferredName  "Material Description"@en ;
+    bamm:preferredName  "Materialbeschreibung"@de ;
+    bamm:description    "Description of the product ."@en ;
+    bamm:characteristic bamm-c:MultiLanguageText .
+
+:materialClassDescription
+    a                   bamm:Property ;
+    bamm:name           "materialClassDescription" ;
+    bamm:preferredName  "Material Class Description"@en ;
+    bamm:preferredName  "Materialklassenbeschreibung"@de ;
+    bamm:description    "Description of the material or product type class."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:unitOfMeasure
+    a                   bamm:Property ;
+    bamm:name           "unitOfMeasure" ;
+    bamm:preferredName  "Unit of Measure"@en ;
+    bamm:description    "Unit of measure of this parameter"@en ;
+    bamm:characteristic bamm-c:UnitReference .
+
+:quantity
+    a                   bamm:Property ;
+    bamm:name           "quantity" ;
+    bamm:preferredName  "Quantity"@en ;
+    bamm:description    "Quantity of materials in material"@en ;
+    bamm:characteristic :Quantity .
+
+:Quantity
+    a bamm-c:Quantifiable ;
+    bamm:name "Quantity" ;
+    bamm:dataType xsd:float ;
+    bamm-c:unit unit:piece .

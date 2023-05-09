@@ -1,0 +1,68 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#>.
+@prefix dcv: <urn:bamm:com.bosch.bci.digitalcv:0.0.2#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductType a bamm:Entity ;
+    bamm:preferredName "Product Type"@en ;
+    bamm:preferredName "Produkttyp"@de ;
+    bamm:description "Definition of a product based on a SAP material number."@en ;
+    bamm:properties ( :materialNumber
+                      [ bamm:property :productDescription; bamm:optional true ]
+                      :productClass
+                      :productClassDescription
+                      :productSubClass
+                      :productSubClassDescription
+                      :statisticsGroup
+                      :statisticsGroupDescription
+                      [ bamm:property :isAssembledFrom; bamm:optional true ]
+                      [ bamm:property dcv:twinReference; bamm:optional true ] ) .
+
+:productDescription a bamm:Property ;
+    bamm:preferredName "Product Description"@en ;
+    bamm:preferredName "Produktbeschreibung"@de ;
+    bamm:description "Description of the product."@en ;
+    bamm:characteristic bamm-c:MultiLanguageText .
+
+:productClass a bamm:Property ;
+    bamm:preferredName "Product Class"@en ;
+    bamm:preferredName "Produktklasse"@de ;
+    bamm:description "The classification of a product type."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:productClassDescription a bamm:Property ;
+    bamm:preferredName "Product Class Description"@en ;
+    bamm:preferredName "Produktklassenbeschreibung"@de ;
+    bamm:description "Description of the product class."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:productSubClass a bamm:Property ;
+    bamm:preferredName "Product Sub-Class"@en ;
+    bamm:preferredName "Produkt-Unterklasse"@de ;
+    bamm:description "The sub-classification of a product type."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:productSubClassDescription a bamm:Property ;
+    bamm:preferredName "Product Sub-Class Description"@en ;
+    bamm:preferredName "Produktunterklassenbeschreibung"@de ;
+    bamm:description "Description of the product sub-class."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:statisticsGroup a bamm:Property ;
+    bamm:preferredName "Statistics Group"@en ;
+    bamm:preferredName "Statistikgruppe"@de ;
+    bamm:description "A categorization of product types."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:statisticsGroupDescription a bamm:Property ;
+    bamm:preferredName "Statistics Group Description"@en ;
+    bamm:preferredName "Statistikgruppenbeschreibung"@de ;
+    bamm:description "Description of the statistics group."@en ;
+    bamm:characteristic bamm-c:Text .

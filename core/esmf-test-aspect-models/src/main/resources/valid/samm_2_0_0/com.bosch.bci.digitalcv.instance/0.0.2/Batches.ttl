@@ -1,0 +1,135 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Batches
+    a                  bamm:Aspect ;
+    bamm:name          "Batches" ;
+    bamm:preferredName "Batches"@en ;
+    bamm:preferredName "Batches"@de ;
+    bamm:description   "Aspect for batches of a certain product type."@en ;
+    bamm:description   "Aspekt welcher die Chargen eines gewissen Produkttyps liefert"@de ;
+    bamm:properties    ( [ bamm:property :root ; bamm:optional true ] :items ) ;
+    bamm:operations    ( ) .
+
+:root
+    a                   bamm:Property ;
+    bamm:name           "root" ;
+    bamm:preferredName  "Root entry reference"@en ;
+    bamm:description    "Reference to root part of a list of bill of materials"@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "RootEntity" ;
+                          bamm:dataType <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#ProductType> ] .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "batches" ;
+    bamm:preferredName  "Batches"@en ;
+    bamm:preferredName  "Chargen"@de ;
+    bamm:description    "A list of batches sorted in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Chargen."@de ;
+    bamm:characteristic [ a             bamm-c:Set ;
+                          bamm:name     "Batches" ;
+                          bamm:dataType :Batch ] .
+
+:Batch
+    a                  bamm:Entity ;
+    bamm:name          "Batch" ;
+    bamm:preferredName "Batch"@en ;
+    bamm:preferredName "Charge"@de ;
+    bamm:description   "Definition of a batch based on a MES batch number."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#batchNumber>
+                         [ bamm:property <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#batchDescription>; bamm:optional true ]
+                         [ bamm:property :startDate; bamm:optional true ]
+                         [ bamm:property :endDate; bamm:optional true ]
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#materialNumber>
+                         <urn:bamm:com.bosch.bci.digitalcv.type:0.0.2#materialDescription>
+                         [ bamm:property :batchOrigin; bamm:optional true ]
+                         [ bamm:property :quantity; bamm:optional true ]
+                       ) .
+
+
+:startDate
+    a                   bamm:Property ;
+    bamm:name           "startDate" ;
+    bamm:preferredName  "Start Date"@en ;
+    bamm:description    "Date, when the batch was started"@en ;
+    bamm:characteristic bamm-c:Timestamp .
+
+:endDate
+    a                   bamm:Property ;
+    bamm:name           "endDate" ;
+    bamm:preferredName  "End Date"@en ;
+    bamm:description    "Date, when the last part of the batch was produced"@en ;
+    bamm:characteristic bamm-c:Timestamp .
+
+:batchOrigin
+    a                   bamm:Property ;
+    bamm:name           "batchOrigin" ;
+    bamm:preferredName  "Batch Origin"@en ;
+    bamm:description    "Who has defined the identifier of the batch own company or supplier"@en ;
+    bamm:characteristic :BatchOrigin .
+
+:BatchOrigin
+    a                  bamm-c:Enumeration ;
+    bamm:name          "BatchOrigin" ;
+    bamm:preferredName "BatchOrigin"@en ;
+    bamm:description   "Origin of a batch"@en ;
+    bamm:dataType      :OriginEntity ;
+    bamm-c:values      ( :OwnOrigin
+                         :SupplierOrigin ) .
+
+:OriginEntity
+    a                  bamm:Entity ;
+    bamm:name          "OriginEntity" ;
+    bamm:preferredName "Origin Entity"@en ;
+    bamm:description   "Entity that describes a batch origin."@en ;
+    bamm:properties    ( :batchOriginAttributeValue
+                         [ bamm:property     :batchOriginAttributeDescription ;
+                           bamm:notInPayload "true"^^xsd:boolean ] ) .
+
+:batchOriginAttributeValue
+    a                   bamm:Property ;
+    bamm:name           "batchOriginAttributeValue" ;
+    bamm:preferredName  "Batch Origin Attribute Value"@en ;
+    bamm:description    "The value representing a specific origin of a batch."@en ;
+    bamm:characteristic [ a             bamm-c:Code ;
+                          bamm:name     "OriginAttributeCode" ;
+                          bamm:dataType xsd:string ] .
+
+:batchOriginAttributeDescription
+    a                   bamm:Property ;
+    bamm:name           "batchOriginAttributeDescription" ;
+    bamm:preferredName  "Batch Origin Attribute Description"@en ;
+    bamm:description    "The description for a specific origin of a batch."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:OwnOrigin
+    a                                :OriginEntity ;
+    :batchOriginAttributeValue       "own"^^xsd:string ;
+    :batchOriginAttributeDescription "Batch defined by company itself" .
+
+:SupplierOrigin
+    a                                :OriginEntity ;
+    :batchOriginAttributeValue       "supplier"^^xsd:string ;
+    :batchOriginAttributeDescription "Batch defined by supplier" .
+
+:quantity
+    a                   bamm:Property ;
+    bamm:name           "quantity" ;
+    bamm:preferredName  "Quantity"@en ;
+    bamm:description    "Quantity of instances in batch"@en ;
+    bamm:characteristic :Quantity .
+
+:Quantity
+    a bamm-c:Quantifiable ;
+    bamm:name "Quantity" ;
+    bamm:dataType xsd:float ;
+    bamm-c:unit unit:piece .

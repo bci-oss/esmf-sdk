@@ -1,0 +1,62 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProcessParameters
+    a                  bamm:Aspect ;
+    bamm:name          "ProcessParameters" ;
+    bamm:preferredName "Process Parameters"@en ;
+    bamm:description   "Aspect for process parameters for processed parts."@en ;
+    bamm:properties    ( :root :parameters ) ;
+    bamm:operations    ( ) .
+
+:root
+    a                   bamm:Property ;
+    bamm:name           "root" ;
+    bamm:preferredName  "Root entry reference"@en ;
+    bamm:description    "Reference to root part of a list of bill of materials"@en ;
+    bamm:characteristic [ a             bamm-c:SingleEntity ;
+                          bamm:name     "RootEntity" ;
+                          bamm:dataType <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#ProcessedPart> ] .
+
+:parameters
+    a                   bamm:Property ;
+    bamm:name           "parameters" ;
+    bamm:preferredName  "Parameters"@en ;
+    bamm:preferredName  "Parameter"@de ;
+    bamm:description    "A list of process parameters in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Parameter."@de ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProcessParameter" ;
+                          bamm:dataType :ProcessParameter ] .
+
+:ProcessParameter
+    a                  bamm:Entity ;
+    bamm:name          "ProcessParameter" ;
+    bamm:preferredName "Process Parameter"@en ;
+    bamm:preferredName "Prozess-Parameter"@de ;
+    bamm:description   "Process parameter with value."@en ;
+    bamm:properties    ( <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#uniquePartId>
+                         <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.1#productionDate>
+                         :parameterName :parameterValue ) .
+
+:parameterName
+    a                   bamm:Property ;
+    bamm:name           "parameterName" ;
+    bamm:preferredName  "Parameter Name"@en ;
+    bamm:description    "Name of process parameter"@en ;
+    bamm:characteristic bamm-c:Text .
+
+:parameterValue
+    a                   bamm:Property ;
+    bamm:name           "parameterValue" ;
+    bamm:preferredName  "Parameter Value"@en ;
+    bamm:description    "Value of process parameter"@en ;
+    bamm:characteristic bamm-c:Text .

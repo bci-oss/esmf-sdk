@@ -1,0 +1,61 @@
+#
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.master:0.0.1#>.
+@prefix eqip:   <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix type:   <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductTypeMaster
+    a                  bamm:Aspect ;
+    bamm:name          "ProductTypeMaster" ;
+    bamm:preferredName "Product Type Master"@en ;
+    bamm:description   "Aspect for product type master data."@en ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Product Type Master Data"@en ;
+    bamm:description    "A list of product types sorted in chronological order."@en ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProductTypeMasterData" ;
+                          bamm:dataType :ProductType ] .
+
+:ProductType
+    a                  bamm:Entity ;
+    bamm:name          "ProductType" ;
+    bamm:preferredName "Product Type"@en ;
+    bamm:preferredName "Produkttyp"@de ;
+    bamm:description   "Definition of a product based on a SAP material number."@en ;
+    bamm:properties    ( type:materialNumber
+                         [ bamm:property type:productDescription; bamm:optional true ]
+                         :productHierarchy
+                         type:materialType
+                         eqip:plantName ) .
+
+:productHierarchy
+    a                   bamm:Property ;
+    bamm:name           "productHierarchy" ;
+    bamm:preferredName  "Product Hierarchy"@en ;
+    bamm:preferredName  "Produkthierarchie"@de ;
+    bamm:description    "The identification of the product hierarchy in master data."@en ;
+    bamm:exampleValue   "000010001100000110" ;
+    bamm:characteristic :ProductHierarchyId .
+
+:ProductHierarchyId
+    a                         bamm-c:Trait ;
+    bamm:name                 "ProductHierarchyId" ;
+    bamm-c:baseCharacteristic [ a                  bamm-c:Code ;
+                                bamm:name          "ProductHierarchyCode" ;
+                                bamm:preferredName "Product Hierarchy"@en ;
+                                bamm:dataType      xsd:string ] ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "ProductHierarchyPattern" ;
+                                bamm:value "[0-9]{6,18}" ] .

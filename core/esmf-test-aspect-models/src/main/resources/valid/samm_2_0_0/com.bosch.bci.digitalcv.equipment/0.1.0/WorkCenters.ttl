@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#> .
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:WorkCenters a samm:Aspect ;
+    samm:preferredName "Work Centers"@en ;
+    samm:description "Aspect for work centers."@en ;
+    samm:properties ( :items ) ;
+    samm:operations ( ) .
+
+:items a samm:Property ;
+    samm:preferredName "Work Center List"@en ;
+    samm:description "A list of work centers within a specific plant."@en ;
+    samm:characteristic [
+        a samm-c:SortedSet ;
+        samm:dataType :WorkCenter
+    ] .

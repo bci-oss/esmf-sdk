@@ -1,0 +1,137 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:samm:com.bosch.bci.digitalcv.instance:0.1.0#>.
+@prefix type: <urn:samm:com.bosch.bci.digitalcv.type:0.1.0#> .
+@prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+@prefix equip: <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#>.
+
+:ProcessParameters a samm:Aspect ;
+    samm:preferredName "Process Parameters"@en ;
+    samm:description "Aspect for process parameters for processed parts."@en ;
+    samm:properties ( :items ) ;
+    samm:operations ( ) .
+
+:items a samm:Property ;
+    samm:preferredName "Parameters"@en ;
+    samm:preferredName "Parameter"@de ;
+    samm:description "A list of process parameters in chronological order."@en ;
+    samm:description "Eine Liste mit chronologisch sortierten Parameter."@de ;
+    samm:characteristic [
+        a samm-c:SortedSet ;
+        samm:dataType :ProcessParameter
+    ] .
+
+:ProcessParameter a samm:Entity ;
+    samm:preferredName "Process Parameter"@en ;
+    samm:preferredName "Prozess-Parameter"@de ;
+    samm:description "Process parameter with value."@en ;
+    samm:properties (   :partIdentifier
+                        :stationName
+                        :processParameterDetails
+                        :locationAddress ) .
+
+:stationName a samm:Property ;
+             samm:preferredName "Station Name"@en ;
+             samm:description "Name of station location string"@en ;
+             samm:characteristic :StationName  .
+
+:StationName a samm-c:Trait ;
+                  samm:see <https://inside-docupedia.bosch.com/confluence/x/o00cbg> ;
+                  samm-c:baseCharacteristic [
+                        a samm-c:Code ;
+                        samm:preferredName "Equipment Address"@en ;
+                        samm:dataType xsd:string
+                    ] ;
+                  samm-c:constraint [
+                        a samm-c:RegularExpressionConstraint ;
+                        samm:value "[a-zA-Z0-9]{1,4}\\.[a-zA-Z0-9]{1,4}\\.[a-zA-Z0-9]{1,4}\\.[a-zA-Z0-9](?:\\.[a-zA-Z0-9]{0,4}(?:\\.[a-zA-Z0-9]{0,4}))"
+                    ] .
+
+:locationAddress a samm:Property;
+                 samm:description: "The address of the process parameter";
+                 samm:characteristic equip:EquipmentAddressEntity .
+
+:partIdentifier a samm:Property;
+                 samm:description: "The reference to the identifying Part" ;
+                 samm:characteristic :PartIdentifierEntity .
+
+:PartIdentifierEntity  a samm-c:SingleEntity ;
+                        samm:dataType :PartIdentifier .
+
+:PartIdentifier a samm:Entity ;
+                  samm:preferredName "Equipment Address"@en ;
+                  samm:description "Address of an equipment."@en ;
+                  samm:properties ( :processedPartId
+                                    type:materialNumber ) .
+
+:processParameterDetails a samm:Property;
+                  samm:description "The parameters of the process" ;
+                  samm:characteristic :ProcessParameterDetailsEntity .
+
+:ProcessParameterDetailsEntity a samm-c:SingleEntity ;
+                       samm:dataType :ProcessParameterDetails .
+
+:ProcessParameterDetails a samm:Entity;
+                  samm:preferredName "Process parameter"@en ;
+                  samm:description "The parameters of a process" ;
+                  samm:properties(   :serialNumber
+                                     :processTime
+                                     dcv:processName
+                                     :parameterName
+                                     :parameterValue
+                                     [ samm:property :unitOfMeasure ; samm:optional true ]
+                                     :paramDataType
+                                     :paramMinTolerance
+                                     :paramMaxTolerance
+                                     :paramValueResult ) .
+
+:parameterName a samm:Property ;
+    samm:preferredName "Parameter Name"@en ;
+    samm:description "Name of process parameter"@en ;
+    samm:characteristic samm-c:Text .
+
+:parameterValue a samm:Property ;
+    samm:preferredName "Parameter Value"@en ;
+    samm:description "Value of process parameter"@en ;
+    samm:characteristic samm-c:Text .
+
+:unitOfMeasure a samm:Property ;
+    samm:preferredName "Unit of Measure"@en ;
+    samm:description "Unit of measure of this parameter"@en ;
+    samm:characteristic samm-c:UnitReference .
+
+:paramDataType a samm:Property ;
+    samm:preferredName "Parameter Data Type"@en ;
+    samm:description "Data type of parameter"@en ;
+    samm:characteristic samm-c:Text .
+
+:paramMinTolerance a samm:Property ;
+    samm:preferredName "Parameter Minimum Tolerance"@en ;
+    samm:description "Minimum tolerance of parameter"@en ;
+    samm:characteristic :Tolerance .
+
+:paramMaxTolerance a samm:Property ;
+    samm:preferredName "Parameter Maximum Tolerance"@en ;
+    samm:description "Maximum tolerance of parameter"@en ;
+    samm:characteristic :Tolerance .
+
+:Tolerance a samm-c:Quantifiable ;
+    samm:dataType xsd:float ;
+    samm-c:unit unit:piece .
+
+:processTime a samm:Property ;
+    samm:preferredName "Process Date and Time"@en ;
+    samm:description "Date and time, when the part was processed"@en ;
+    samm:characteristic samm-c:Timestamp .
+
+:paramValueResult a samm:Property ;
+    samm:preferredName "Result State"@en ;
+    samm:description "Result state of part in the manufacturing if part is ok or nok in the current process step"@en ;
+    samm:characteristic :ResultState .

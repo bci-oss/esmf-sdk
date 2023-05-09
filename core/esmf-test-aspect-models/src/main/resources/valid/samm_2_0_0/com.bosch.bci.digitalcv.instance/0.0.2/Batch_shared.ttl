@@ -1,0 +1,32 @@
+
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.2#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:batchNumber
+    a                   bamm:Property ;
+    bamm:name           "batchNumber" ;
+    bamm:preferredName  "Batch Number"@en ;
+    bamm:preferredName  "Chargennummer"@de ;
+    bamm:description    "The identification of the batch on the MES batch identifier."@en ;
+    bamm:characteristic [ a                         bamm-c:Trait ;
+                          bamm:name                 "BatchIdConstraint" ;
+                          bamm-c:baseCharacteristic [ a                  bamm-c:Code ;
+                                                      bamm:name          "BatchIdCode" ;
+                                                      bamm:preferredName "Batch ID"@en ;
+                                                      bamm:dataType      xsd:string ] ;
+                          bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                                      bamm:name  "BatchIdPattern" ;
+                                                      bamm:value "[A-Z0-9_-]+" ] ] .
+# examples F03Z2000NU01, F03Z000196, SMA_97216218_S201027HS019, 2104200105A, NUT_226_0085735766
+
+:batchDescription
+    a                   bamm:Property ;
+    bamm:name           "batchDescription" ;
+    bamm:preferredName  "Batch Description"@en ;
+    bamm:preferredName  "Chargenbeschreibung"@de ;
+    bamm:description    "Description of the batch."@en ;
+    bamm:characteristic bamm-c:MultiLanguageText .

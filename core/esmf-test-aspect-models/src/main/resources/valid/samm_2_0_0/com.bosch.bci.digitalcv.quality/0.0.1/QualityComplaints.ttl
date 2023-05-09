@@ -1,0 +1,456 @@
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.quality:0.0.1#> .
+@prefix inst: <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.4#> .
+@prefix type: <urn:bamm:com.bosch.bci.digitalcv.type:0.0.4#> .
+
+:QualityComplaints a bamm:Aspect ;
+   bamm:preferredName "Quality Complaints"@en ;
+   bamm:description "List of quality complaints for a product type or vehicle"@en ;
+   bamm:properties ( :complaints ) ;
+   bamm:operations ( ) ;
+   bamm:events ( ) .
+
+:complaints a bamm:Property ;
+   bamm:preferredName "complaints"@en ;
+   bamm:description "List of complaints"@en ;
+   bamm:characteristic :ComplaintList .
+
+:ComplaintList a bamm-c:SortedSet ;
+   bamm:preferredName "Complaint List"@en ;
+   bamm:dataType :QualityComplaint .
+
+:QualityComplaint a bamm:Entity ;
+   bamm:preferredName "Quality Complaint"@en ;
+   bamm:description "Complaint about the quality of a product"@en ;
+   bamm:properties ( :productType :moduleType [ bamm:property :productInstance; bamm:optional true ] :complaintMode :failureType [ bamm:property :complaintDate; bamm:optional true ] :failureDate :completionDate :manufacturingDate [ bamm:property :notificationDate; bamm:optional true ] :notificationNumber [ bamm:property :notificationDescription; bamm:optional true ] :customer [ bamm:property :vehicle; bamm:optional true ] :defectLocation :defectTypeGroup :defectTypeText :externalQ8Notification [ bamm:property :countryOfFailure; bamm:optional true ] ) .
+
+:productType a bamm:Property ;
+   bamm:preferredName "productType"@en ;
+   bamm:description "Product type for which the complaint was issued"@en ;
+   bamm:characteristic :ProductTypeData .
+
+:moduleType a bamm:Property ;
+   bamm:preferredName "moduleType"@en ;
+   bamm:description "Module type for which the complaint was issued"@en ;
+   bamm:characteristic :ProductTypeData .
+
+:productInstance a bamm:Property ;
+   bamm:preferredName "product instance"@en ;
+   bamm:description "Reference of product instances that this complaint concerns"@en ;
+   bamm:characteristic :ProductInstanceData .
+
+:complaintMode a bamm:Property ;
+   bamm:preferredName "complaint mode"@en ;
+   bamm:characteristic :ComplaintModeEntity .
+
+:failureType a bamm:Property ;
+   bamm:preferredName "failure type"@en ;
+   bamm:characteristic :FailureTypeEntity .
+
+:complaintDate a bamm:Property ;
+   bamm:preferredName "complaint date"@en ;
+   bamm:description "Date when claim has been filed"@en ;
+   bamm:characteristic bamm-c:Timestamp .
+
+:failureDate a bamm:Property ;
+   bamm:preferredName "failure date"@en ;
+   bamm:description "Date when claimed part has failed"@en ;
+   bamm:characteristic bamm-c:Timestamp .
+
+:completionDate a bamm:Property ;
+   bamm:preferredName "completion date"@en ;
+   bamm:description "Date when claim was completed"@en ;
+   bamm:characteristic bamm-c:Timestamp .
+
+:manufacturingDate a bamm:Property ;
+   bamm:preferredName "manufacturing date"@en ;
+   bamm:description "Date when claimed parts were manufactured by vendor"@en ;
+   bamm:characteristic bamm-c:Timestamp .
+
+:notificationDate a bamm:Property ;
+   bamm:preferredName "notification date"@en ;
+   bamm:description "date when vendor was notified of complaint"@en ;
+   bamm:characteristic bamm-c:Timestamp .
+
+:notificationNumber a bamm:Property ;
+   bamm:preferredName "notification number"@en ;
+   bamm:description "Unique identifier of claim notification"@en ;
+   bamm:characteristic :NotificationIdentifier .
+
+:notificationDescription a bamm:Property ;
+   bamm:preferredName "notification description"@en ;
+   bamm:description "Text for claim notification provided by customer"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:customer a bamm:Property ;
+   bamm:preferredName "customer"@en ;
+   bamm:characteristic :CustomerData .
+
+:vehicle a bamm:Property ;
+   bamm:preferredName "vehicle"@en ;
+   bamm:description "Details of impacted vehicle"@en ;
+   bamm:characteristic :VehicleData .
+
+:defectLocation a bamm:Property ;
+   bamm:preferredName "defect location"@en ;
+   bamm:characteristic :DefectLocationData .
+
+:defectTypeGroup a bamm:Property ;
+   bamm:preferredName "defect type group"@en ;
+   bamm:characteristic :DefectTypeGroupData .
+
+:defectTypeText a bamm:Property ;
+   bamm:preferredName "defect type text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:externalQ8Notification a bamm:Property ;
+   bamm:preferredName "external Q8 notification"@en ;
+   bamm:characteristic :ExternalQ8NotificationData .
+
+:countryOfFailure a bamm:Property ;
+   bamm:preferredName "country of failure"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:ProductTypeData a bamm-c:SingleEntity ;
+   bamm:preferredName "Product Type Data"@en ;
+   bamm:dataType :ProductType .
+
+:ProductInstanceData a bamm-c:SingleEntity ;
+   bamm:preferredName "Product Instances Data"@en ;
+   bamm:dataType :ProductInstance .
+
+:ComplaintModeEntity a bamm:Characteristic ;
+   bamm:preferredName "Complaint Mode Entity"@en ;
+   bamm:dataType :ComplaintMode .
+
+:FailureTypeEntity a bamm:Characteristic ;
+   bamm:preferredName "Failure Type Enity"@en ;
+   bamm:dataType :FailureType .
+
+:NotificationIdentifier a bamm-c:Code ;
+   bamm:dataType xsd:string .
+
+:CustomerData a bamm-c:SingleEntity ;
+   bamm:preferredName "customer data"@en ;
+   bamm:dataType :Customer .
+
+:VehicleData a bamm-c:SingleEntity ;
+   bamm:preferredName "Vehicle Data"@en ;
+   bamm:dataType :Vehicle .
+
+:DefectLocationData a bamm-c:SingleEntity ;
+   bamm:preferredName "Defect Location Data"@en ;
+   bamm:dataType :DefectLocation .
+
+:DefectTypeGroupData a bamm-c:SingleEntity ;
+   bamm:preferredName "Defect Type Group Data"@en ;
+   bamm:dataType :DefectTypeGroup .
+
+:ExternalQ8NotificationData a bamm:Characteristic ;
+   bamm:preferredName "External Q8 Notification Data"@en ;
+   bamm:dataType :ExternalQ8Notification .
+
+:ProductType a bamm:Entity ;
+   bamm:preferredName "Product Type"@en ;
+   bamm:description "Product data from claim"@en ;
+   bamm:properties ( type:materialNumber [ bamm:property :productDescription; bamm:optional true ] :productClassificationDescription :plantCode ) .
+
+:ProductInstance a bamm:Entity ;
+   bamm:preferredName "Product Instance"@en ;
+   bamm:description "Details of a product instance"@en ;
+   bamm:properties ( :serialNumber type:materialNumber [ bamm:property inst:processedPartId; bamm:optional true ] ) .
+
+:ComplaintMode a bamm:Entity ;
+   bamm:preferredName "Complaint Mode"@en ;
+   bamm:properties ( :complaintModeCode :complaintModeDescription ) .
+
+:FailureType a bamm:Entity ;
+   bamm:preferredName "Failure Type"@en ;
+   bamm:properties ( :failureTypeDescription :warrantyDecision :investigationPlantPosition [ bamm:property :repairKey; bamm:optional true ] [ bamm:property :itemCategory; bamm:optional true ] ) .
+
+:Customer a bamm:Entity ;
+   bamm:preferredName "Customer"@en ;
+   bamm:description "Customer details"@en ;
+   bamm:properties ( :groupKey [ bamm:property :businessPartnerId; bamm:optional true ] :customerPartNumber [ bamm:property :customerConcernText; bamm:optional true ] ) .
+
+:Vehicle a bamm:Entity ;
+   bamm:preferredName "Vehicle"@en ;
+   bamm:description "Vehicle information"@en ;
+   bamm:properties ( :vehicleId :vehicleModel :modelYear [ bamm:property :vehicleMileage; bamm:optional true ] ) .
+
+:DefectLocation a bamm:Entity ;
+   bamm:preferredName "Defect Location"@en ;
+   bamm:description "Details of the location where a defect was detected"@en ;
+   bamm:properties ( [ bamm:property :defectLocationCode; bamm:optional true ] [ bamm:property :defectLocationCodeText; bamm:optional true ] :defectLocationTypeText :defectLocationGroupCode :defectLocationGroupCodeText ) .
+
+:DefectTypeGroup a bamm:Entity ;
+   bamm:preferredName "Defect Type Group"@en ;
+   bamm:description "Details of the defect type"@en ;
+   bamm:properties ( :defectTypeGroupCode :defectTypeGroupCodeText ) .
+
+:ExternalQ8Notification a bamm:Entity ;
+   bamm:preferredName "External Q8 Notification"@en ;
+   bamm:properties ( :externalQ8NotificationCode :externalQ8NotificationText ) .
+
+:productDescription a bamm:Property ;
+   bamm:preferredName "product description"@en ;
+   bamm:description "Description of product"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:productClassificationDescription a bamm:Property ;
+   bamm:preferredName "product classification description"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:plantCode a bamm:Property ;
+   bamm:preferredName "plant code"@en ;
+   bamm:description "identifier of plant where material was produced e.g. from SAP"@en ;
+   bamm:characteristic :PlantCode .
+
+:investigationPlantPosition a bamm:Property ;
+   bamm:preferredName "investigation plant position"@en ;
+   bamm:description "investigation plant position"@en ;
+   bamm:characteristic :InvestigationPlantPosition .
+
+:serialNumber a bamm:Property ;
+   bamm:preferredName "serial number"@en ;
+   bamm:description "external identifier of product instance"@en ;
+   bamm:characteristic :SerialNumber .
+
+:complaintModeCode a bamm:Property ;
+   bamm:preferredName "complaint mode code"@en ;
+   bamm:characteristic :ComplaintModeCode .
+
+:complaintModeDescription a bamm:Property ;
+   bamm:preferredName "complaint mode description"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:failureTypeDescription a bamm:Property ;
+   bamm:preferredName "failure type description"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:warrantyDecision a bamm:Property ;
+   bamm:preferredName "warranty decision"@en ;
+   bamm:description "warranty decision codes"@en ;
+   bamm:characteristic :WarrantyDecisions .
+
+:repairKey a bamm:Property ;
+   bamm:preferredName "repair key"@en ;
+   bamm:description "repair key"@en ;
+   bamm:characteristic :RepairKey .
+
+:itemCategory a bamm:Property ;
+   bamm:preferredName "item category"@en ;
+   bamm:description "item category of investigation"@en ;
+   bamm:characteristic :ItemCategory .
+
+:businessPartnerId a bamm:Property ;
+   bamm:preferredName "business partner ID"@en ;
+   bamm:description "unique business partner id"@en ;
+   bamm:characteristic :BusinessPartnerId .
+
+:customerPartNumber a bamm:Property ;
+   bamm:preferredName "customer part number"@en ;
+   bamm:description "Part number of customer for the claimed part"@en ;
+   bamm:characteristic :CustomerPartNumber .
+
+:groupKey a bamm:Property ;
+   bamm:preferredName "customer group key"@en ;
+   bamm:description "Group key of the customer"@en ;
+   bamm:characteristic :CustomerGroupKey .
+
+:customerConcernText a bamm:Property ;
+   bamm:preferredName "customer concern text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:vehicleId a bamm:Property ;
+   bamm:preferredName "vehicle Id"@en ;
+   bamm:description "unique vehicle id (vin)"@en ;
+   bamm:characteristic :VehicleID .
+
+:vehicleModel a bamm:Property ;
+   bamm:preferredName "vehicle model"@en ;
+   bamm:description "Model description of vehicle"@en ;
+   bamm:characteristic :VehicleModel .
+
+:modelYear a bamm:Property ;
+   bamm:preferredName "model year"@en ;
+   bamm:description "Year when model of vehicle was produced"@en ;
+   bamm:characteristic :Year .
+
+:vehicleMileage a bamm:Property ;
+   bamm:preferredName "vehicle mileage"@en ;
+   bamm:characteristic :Mileage .
+
+:defectLocationCode a bamm:Property ;
+   bamm:preferredName "defect location code"@en ;
+   bamm:characteristic :DefectLocationCode .
+
+:defectLocationCodeText a bamm:Property ;
+   bamm:preferredName "defect location code text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:defectLocationTypeText a bamm:Property ;
+   bamm:preferredName "defect location type text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:defectLocationGroupCode a bamm:Property ;
+   bamm:preferredName "defect location group code"@en ;
+   bamm:characteristic :DefectLocationGroupCode .
+
+:defectLocationGroupCodeText a bamm:Property ;
+   bamm:preferredName "defect location group code text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:defectTypeGroupCode a bamm:Property ;
+   bamm:preferredName "defect type group code"@en ;
+   bamm:characteristic :DefectTypeGroupCode .
+
+:defectTypeGroupCodeText a bamm:Property ;
+   bamm:preferredName "defect type group code text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:externalQ8NotificationCode a bamm:Property ;
+   bamm:preferredName "external Q8 notification code"@en ;
+   bamm:characteristic :ExternalQ8NotificationCode .
+
+:externalQ8NotificationText a bamm:Property ;
+   bamm:preferredName "external Q8 notification text"@en ;
+   bamm:characteristic bamm-c:Text .
+
+:PlantCode a bamm-c:Code ;
+   bamm:preferredName "Plant Code"@en ;
+   bamm:dataType xsd:string .
+
+:InvestigationPlantPosition a bamm-c:Code ;
+   bamm:preferredName "Investigation Plant Position"@en ;
+   bamm:dataType xsd:string .
+
+:SerialNumber a bamm-c:Code ;
+   bamm:preferredName "Serial Number"@en ;
+   bamm:dataType xsd:string .
+
+:ComplaintModeCode a bamm-c:Code ;
+   bamm:preferredName "Complaint Mode Code"@en ;
+   bamm:dataType xsd:positiveInteger .
+
+:WarrantyDecisions a bamm-c:Enumeration ;
+   bamm:preferredName "Warranty Decisions"@en ;
+   bamm:dataType xsd:string ;
+   bamm-c:values ( "B" "C" "S" "O" ) .
+
+:RepairKey a bamm-c:Code ;
+   bamm:preferredName "Repair Key"@en ;
+   bamm:dataType xsd:positiveInteger .
+
+:ItemCategory a bamm-c:Enumeration ;
+    bamm:preferredName "Item Category"@en ;
+    bamm:description "Category of the claim item"@en ;
+    bamm:dataType :ItemCategoryEntity ;
+    bamm-c:values ( :ItemCategoryCoInvestigation :ItemCategoryCoInvestigationFinal :ItemCategoryPreInvestigation :ItemCategoryMainInvestigation :ItemCategoryStatisticalPosition ) .
+
+:ItemCategoryEntity a bamm:Entity ;
+   bamm:preferredName "Item Category Entity"@en ;
+   bamm:description   "Entity that describes an item category."@en ;
+   bamm:properties    ( :itemCategoryAttributeValue
+                         [ bamm:property     :itemCategoryAttributeDescription ;
+                           bamm:notInPayload "true"^^xsd:boolean ] ) .
+
+:itemCategoryAttributeValue a bamm:Property ;
+    bamm:name "itemCategoryAttributeValue" ;
+    bamm:preferredName "Item Category Attribute Value"@en ;
+    bamm:description "The value representing a specific item category."@en ;
+    bamm:characteristic [ a  bamm-c:Code ;
+                          bamm:name     "ItemCategoryAttributeCode" ;
+                          bamm:dataType xsd:string ] .
+
+:itemCategoryAttributeDescription a bamm:Property ;
+    bamm:name  "itemCategoryAttributeDescription" ;
+    bamm:preferredName  "Item Category Attribute Description"@en ;
+    bamm:description    "The description for an item category."@en ;
+    bamm:characteristic bamm-c:Text .
+
+:ItemCategoryCoInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "co investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was co-investigated" .
+
+:ItemCategoryCoInvestigationFinal a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "co investigation with final resp."^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in co investigation and has a final response" .
+
+:ItemCategoryPreInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "pre investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in pre investigation" .
+
+:ItemCategoryMainInvestigation a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "main investigation"^^xsd:string ;
+    :itemCategoryAttributeDescription "Claim was in main investigation" .
+
+:ItemCategoryStatisticalPosition a :ItemCategoryEntity ;
+    :itemCategoryAttributeValue  "statistical position"^^xsd:string ;
+    :itemCategoryAttributeDescription "Statistical position" .
+
+:SortNumberPosition a bamm-c:Code ;
+   bamm:preferredName "Repair Key"@en ;
+   bamm:dataType xsd:positiveInteger .
+
+:BusinessPartnerId a bamm-c:Code ;
+   bamm:preferredName "Business Partner ID"@en ;
+   bamm:dataType xsd:string .
+
+:CustomerPartNumber a bamm-c:Code ;
+   bamm:preferredName "customer part number"@en ;
+   bamm:dataType xsd:string .
+
+:CustomerGroupKey a bamm-c:Code ;
+   bamm:preferredName "customer group key"@en ;
+   bamm:dataType xsd:string .
+
+:VehicleID a bamm-c:Trait ;
+   bamm-c:baseCharacteristic [
+      a bamm-c:Code ;
+      bamm:preferredName "Vehicle Number"@en ;
+      bamm:dataType xsd:string ;
+      bamm:name "VehicleID" 
+   ] ;
+   bamm-c:constraint [
+      a bamm-c:RegularExpressionConstraint ;
+      bamm:value "[1234567890ABCDEFGHJKLMNPRSTUVWXYZ]{17}" ;
+      bamm:name "VINPattern" 
+   ] ;
+   bamm:name "VINConstraint" .
+
+:VehicleModel a bamm-c:Code ;
+   bamm:preferredName "Vehicle Model"@en ;
+   bamm:dataType xsd:string .
+
+:Year a bamm-c:Code ;
+   bamm:preferredName "Year"@en ;
+   bamm:dataType xsd:gYear .
+
+:Mileage a bamm-c:Quantifiable ;
+   bamm:preferredName "Mileage"@en ;
+   bamm:dataType xsd:integer ;
+   bamm-c:unit unit:kilometre .
+
+:DefectLocationCode a bamm-c:Code ;
+   bamm:preferredName "Defect Location Code"@en ;
+   bamm:dataType xsd:string .
+
+:DefectLocationGroupCode a bamm-c:Code ;
+   bamm:preferredName "Defect Location Group Code"@en ;
+   bamm:dataType xsd:string .
+
+:DefectTypeGroupCode a bamm-c:Code ;
+   bamm:preferredName "Defect Type Group Code"@en ;
+   bamm:dataType xsd:string .
+
+:ExternalQ8NotificationCode a bamm-c:Code ;
+   bamm:preferredName "External Q8 Notification Code"@en ;
+   bamm:dataType xsd:string .
+

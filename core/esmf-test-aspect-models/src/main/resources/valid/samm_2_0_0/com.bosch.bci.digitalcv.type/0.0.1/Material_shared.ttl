@@ -1,0 +1,66 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.type:0.0.1#>.
+@prefix bamm:   <urn:bamm:com.bosch.nexeed.digitaltwin:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:com.bosch.nexeed.digitaltwin:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:com.bosch.nexeed.digitaltwin:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:com.bosch.nexeed.digitaltwin:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Material
+    a                  bamm:Entity ;
+    bamm:name          "Material" ;
+    bamm:preferredName "Material"@en ;
+    bamm:preferredName "Material"@de ;
+    bamm:description   "Definition of a material as type from SAP."@en ;
+    bamm:properties    ( :materialNumber
+                         :materialDescription
+                         :materialClass
+                         :isAssembledFrom ) .
+
+:isAssembledFrom
+    a                   bamm:Property ;
+    bamm:name           "isAssembledFrom" ;
+    bamm:preferredName  "Is Assembled From"@en ;
+    bamm:description    "A list of materials this material is assembled from."@en ;
+    bamm:characteristic [ a             bamm-c:Set ;
+                          bamm:name     "MaterialNumbers" ;
+                          bamm:dataType :MaterialNumber ] .
+
+:materialClass
+    a                   bamm:Property ;
+    bamm:name           "materialClass" ;
+    bamm:preferredName  "Material Class"@en ;
+    bamm:preferredName  "Materialklasse"@de ;
+    bamm:description    "The classification of material."@en ;
+    bamm:characteristic [ a                  bamm-c:Code ;
+                          bamm:name          "MaterialClassCode" ;
+                          bamm:preferredName "Material Class"@en ;
+                          bamm:dataType      xsd:string ] .
+
+:materialNumber
+    a                   bamm:Property ;
+    bamm:name           "materialNumber" ;
+    bamm:preferredName  "Material Number"@en ;
+    bamm:preferredName  "Materialnummer"@de ;
+    bamm:description    "The identification of the product based on the SAP material number."@en ;
+    bamm:characteristic :MaterialNumber .
+
+:MaterialNumber
+    a                         bamm-c:Trait ;
+    bamm:name                 "MaterialNumberConstraint" ;
+    bamm-c:baseCharacteristic [ a                  bamm-c:Code ;
+                                bamm:name          "MaterialNumberCode" ;
+                                bamm:preferredName "Material Number"@en ;
+                                bamm:dataType      xsd:string ] ;
+    bamm-c:constraint         [ a          bamm-c:RegularExpressionConstraint ;
+                                bamm:name  "MaterialNumberPattern" ;
+                                bamm:value "[A-Z0-9]{10,12}" ] .
+# example F03Z2000NU01, F03Z000196
+
+:materialDescription
+    a                   bamm:Property ;
+    bamm:name           "materialDescription" ;
+    bamm:preferredName  "Material Description"@en ;
+    bamm:preferredName  "Materialbeschreibung"@de ;
+    bamm:description    "Description of the product ."@en ;
+    bamm:characteristic bamm-c:MultiLanguageText .
+

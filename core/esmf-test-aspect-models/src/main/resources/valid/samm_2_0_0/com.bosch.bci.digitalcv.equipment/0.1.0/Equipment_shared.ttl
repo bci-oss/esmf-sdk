@@ -1,0 +1,136 @@
+    #
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.equipment:0.1.0#> .
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+
+:EquipmentAddress
+    a                  samm:Entity ;
+    samm:preferredName "Equipment Address"@en ;
+    samm:description   "Address of an equipment."@en ;
+    samm:properties    ( :plantId
+                         [ samm:property :lineId ;
+                           samm:optional true ]
+                         [ samm:property :stationId ;
+                           samm:optional true ]
+                         [ samm:property :stationIndex ;
+                           samm:optional true ]
+                         [ samm:property :workPosition ;
+                           samm:optional true ]
+                         [ samm:property :toolPosition ;
+                           samm:optional true ] ) .
+
+:plantId
+    a                   samm:Property ;
+    samm:preferredName  "Plant ID"@en ;
+    samm:description    "The identification of a production plant in an equipment address."@en ;
+    samm:exampleValue   "3740" ;
+    samm:see            <http://bos.ch/i40/core/equipment#plantId> ;
+    samm:characteristic :PlantId .
+
+:lineId
+    a                   samm:Property ;
+    samm:preferredName  "Line ID"@en ;
+    samm:preferredName  "Eindeutige Linien-ID"@de ;
+    samm:description    "The identification of a production line."@en ;
+    samm:see            <http://bos.ch/i40/core/equipment#uniqueLineId> ;
+    samm:characteristic :EquipmentAddressSection .
+
+:stationId
+    a                   samm:Property ;
+    samm:preferredName  "Station ID"@en ;
+    samm:preferredName  "Stations-ID"@de ;
+    samm:description    "The identification of a production station."@en ;
+    samm:exampleValue   "E751" ;
+    samm:see            <http://bos.ch/i40/core/equipment#stationId> ;
+    samm:characteristic :EquipmentAddressSection .
+
+:stationIndex
+    a                   samm:Property ;
+    samm:preferredName  "Station Index"@en ;
+    samm:preferredName  "Stationsindex"@de ;
+    samm:description    "The instance of a production station."@en ;
+    samm:see            <http://bos.ch/i40/core/equipment#stationIndex> ;
+    samm:characteristic :StationIndex .
+
+:workPosition
+    a                   samm:Property ;
+    samm:preferredName  "Work Position"@en ;
+    samm:description    "The work position describes each individual process operation in the MES and identifies the equipment which executes the operation."@en ;
+    samm:characteristic :EquipmentAddressSection .
+
+:toolPosition
+    a                   samm:Property ;
+    samm:preferredName  "Tool Position"@en ;
+    samm:description    "The tool position subdivides working positions into further intermediate steps and identifies the equipment which executes these steps."@en ;
+    samm:characteristic :EquipmentAddressSection .
+
+:PlantId
+    a                         samm-c:Trait ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:value "[0-9A-Z]{4}" ] .
+
+:EquipmentAddressSection
+    a                         samm-c:Trait ;
+    samm-c:baseCharacteristic dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:value "[0-9]{1,4}" ] .
+
+:StationIndex
+    a                  samm-c:Code ;
+    samm:preferredName "Station Index"@en ;
+    samm:dataType      xsd:positiveInteger .
+
+:Equipment
+    a                  samm:AbstractEntity ;
+    samm:preferredName "Equipment"@en ;
+    samm:description   "Definition of an equipment."@en ;
+    samm:properties    ( :locationAddress
+                         [ samm:property :mesLocationId ;
+                           samm:optional true ]
+                         [ samm:property dcv:twinReference ;
+                           samm:optional true ] ) .
+
+:locationAddress
+    a                   samm:Property ;
+    samm:preferredName  "Location ID"@en ;
+    samm:description    "The identification of an equipment in the form of a unique address."@en ;
+    samm:characteristic :EquipmentAddressEntity .
+
+:mesLocationId
+    a                   samm:Property ;
+    samm:preferredName  "MES Location Id"@en ;
+    samm:description    "The location id from MES for the equipment."@en ;
+    samm:characteristic [ a                         samm-c:Trait ;
+                          samm-c:baseCharacteristic dcv:StringCode ;
+                          samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                                      samm:value "([0-9]{4}\\.){3}([0-9]\\.){1}([0-9]{4}\\.){1}([0-9]{4}){1}" ] ] .
+
+:EquipmentAddressEntity
+    a             samm-c:SingleEntity ;
+    samm:dataType :EquipmentAddress .
+
+:parentEquipment
+    a                   samm:Property ;
+    samm:description    "The reference to the parent equipment."@en ;
+    samm:characteristic :EquipmentAddressEntity .
+
+:childEquipmentCount
+    a                   samm:Property ;
+    samm:preferredName  "Child Equipment Count"@en ;
+    samm:description    "The amount of sub-equipments included in the setup of an equipment."@en ;
+    samm:characteristic [ a             samm-c:Quantifiable ;
+                          samm:dataType xsd:positiveInteger ] .
+
+:ParentEquipment
+    a                samm:AbstractEntity ;
+    samm:extends     :Equipment ;
+    samm:description "An Equipment which contains child equipments and is represented by a digital twin."@en ;
+    samm:properties  ( :childEquipmentCount ) .

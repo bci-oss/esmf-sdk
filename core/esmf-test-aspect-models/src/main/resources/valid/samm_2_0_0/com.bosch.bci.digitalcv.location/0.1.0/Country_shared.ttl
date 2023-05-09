@@ -1,0 +1,56 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix :       <urn:samm:com.bosch.bci.digitalcv.location:0.1.0#>.
+@prefix samm:   <urn:samm:org.eclipse.esmf.samm:meta-model:2.0.0#> .
+@prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.0.0#> .
+@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.0.0#> .
+@prefix unit:   <urn:samm:org.eclipse.esmf.samm:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:samm:com.bosch.bci.digitalcv:0.1.0#> .
+:Country a samm:Entity ;
+       samm:name          "Country" ;
+       samm:preferredName "Country"@en ;
+       samm:preferredName "Land"@de ;
+       samm:description   "A world country with standard ISO codes"@en ;
+       samm:properties    ( :countryCode
+                            :countryName
+                            :countryFullName
+         ) .
+
+:countryCode
+    a                   samm:Property ;
+    samm:name           "countryCode" ;
+    samm:preferredName  "Country Code"@en ;
+    samm:description    "The identification of a Country with ISO code."@en ;
+    samm:exampleValue   "DE" ;
+    samm:characteristic :CountryID .
+
+:CountryID
+    a                         samm-c:Trait ;
+    samm:name                 "CountryID" ;
+    samm-c:baseCharacteristic  dcv:StringCode ;
+    samm-c:constraint         [ a          samm-c:RegularExpressionConstraint ;
+                                samm:name  "CountryIdPattern" ;
+                                samm:value "[A-Z]{2}" ] .
+
+# corresponds to Ref-MDS short name
+:countryName
+    a                   samm:Property ;
+    samm:name           "countryName" ;
+    samm:preferredName  "Country Name"@en ;
+    samm:preferredName  "Länderkurzname"@de ;
+    samm:description    "The official short name of the country."@en ;
+    samm:exampleValue   "Germany" ;
+    samm:characteristic samm-c:Text .
+
+# corresponds to Ref-MDS official full form
+:countryFullName
+    a                   samm:Property ;
+    samm:name           "countryFullName" ;
+    samm:preferredName  "Country Full Name"@en ;
+    samm:preferredName  "Länderlangname"@de ;
+    samm:description    "The official full name of the country."@en ;
+    samm:exampleValue   "the Federal Republic of Germany" ;
+    samm:characteristic samm-c:Text .

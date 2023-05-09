@@ -1,0 +1,29 @@
+    #
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.instance:0.0.3#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:Parts
+    a                  bamm:Aspect ;
+    bamm:name          "Parts" ;
+    bamm:preferredName "Part Bill of Material"@en ;
+    bamm:description   "Aspect for bill of material for processed parts."@en ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Processed Parts"@en ;
+    bamm:preferredName  "Teile"@de ;
+    bamm:description    "A list of processed parts sorted in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Teilen."@de ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProcessedPart" ;
+                          bamm:dataType :ProcessedPart ] .

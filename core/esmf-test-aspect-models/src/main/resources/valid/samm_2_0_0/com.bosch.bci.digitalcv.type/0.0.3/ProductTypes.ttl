@@ -1,0 +1,32 @@
+    #
+# Aspect model for product
+# format turtle https://www.w3.org/TeamSubmission/turtle
+#
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.type:0.0.3#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+:ProductTypes
+    a                  bamm:Aspect ;
+    bamm:name          "ProductTypes" ;
+    bamm:preferredName "Product Types"@en ;
+    bamm:preferredName "Produkttypen"@de ;
+    bamm:description   "Aspect for product types of a certain product family."@en ;
+    bamm:description   "Aspekt welcher die Produktypen einer gewissen Produktfamilie liefert"@de ;
+    bamm:properties    ( :items ) ;
+    bamm:operations    ( ) .
+
+:items
+    a                   bamm:Property ;
+    bamm:name           "items" ;
+    bamm:preferredName  "Product Types"@en ;
+    bamm:preferredName  "Produkttypen"@de ;
+    bamm:description    "A list of product types sorted in chronological order."@en ;
+    bamm:description    "Eine Liste mit chronologisch sortierten Produkttypen."@de ;
+    bamm:characteristic [ a             bamm-c:SortedSet ;
+                          bamm:name     "ProductTypes" ;
+                          bamm:dataType :ProductType ] .
+

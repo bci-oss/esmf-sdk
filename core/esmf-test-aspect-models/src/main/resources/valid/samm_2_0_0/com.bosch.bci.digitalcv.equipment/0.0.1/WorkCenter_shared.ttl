@@ -1,0 +1,51 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv.equipment:0.0.1#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv: <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+
+:WorkCenter a bamm:AbstractEntity ;
+    bamm:extends :ParentEquipment ;
+    bamm:description "Definition of an equipment which is always placed in a plant and hence has a parent equipment."@en ;
+    bamm:properties ( :name :parentEquipment ) .
+
+:Line a bamm:Entity ;
+    bamm:extends :WorkCenter ;
+    bamm:preferredName "Production Line"@en ;
+    bamm:preferredName "Produktionslinie"@de ;
+    bamm:description "Definition of a production line."@en ;
+    bamm:properties (  ) .
+
+:name a bamm:Property ;
+    bamm:preferredName "Work Center Name"@en ;
+    bamm:description "The name of the work center."@en ;
+    bamm:characteristic :WorkCenterName .
+
+:WorkCenterName a bamm-c:Trait ;
+    bamm-c:baseCharacteristic dcv:StringCode ;
+    bamm-c:constraint [
+        a bamm-c:RegularExpressionConstraint ;
+        bamm:value "[A-Za-z0-9\\s,]+"
+    ] .
+
+:Pool a bamm:Entity ;
+    bamm:preferredName "Production Pool"@en ;
+    bamm:description "Definition of a production pool."@en ;
+    bamm:properties ( :poolId ) .
+
+:poolId a bamm:Property ;
+   bamm:description "The identifier of a production pool."@en ;
+   bamm:characteristic :PoolId .
+
+:PoolId a bamm-c:Trait ;
+   bamm-c:baseCharacteristic dcv:StringCode ;
+   bamm-c:constraint [
+      a bamm-c:RegularExpressionConstraint ;
+      bamm:value "[0-9]{4}"
+   ] .

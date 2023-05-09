@@ -1,0 +1,18 @@
+#
+# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+#
+
+@prefix : <urn:bamm:com.bosch.bci.digitalcv:0.0.2#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:StringCode a bamm-c:Code ;
+    bamm:dataType xsd:string .
+
+:processName a bamm:Property ;
+    bamm:preferredName "Process Name"@en ;
+    bamm:description "Name of process"@en ;
+    bamm:characteristic bamm-c:Text .

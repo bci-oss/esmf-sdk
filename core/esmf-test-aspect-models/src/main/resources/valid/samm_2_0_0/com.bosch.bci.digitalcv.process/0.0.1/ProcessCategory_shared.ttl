@@ -1,0 +1,43 @@
+@prefix :       <urn:bamm:com.bosch.bci.digitalcv.process:0.0.1#>.
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:2.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:2.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:2.0.0#> .
+@prefix unit:   <urn:bamm:io.openmanufacturing:unit:2.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcv:    <urn:bamm:com.bosch.bci.digitalcv:0.0.2#> .
+:ProcessCategory a bamm:Entity ;
+          bamm:name "ProcessCategory" ;
+          bamm:description "Definition of an equipment which is always placed in a station and hence has a parent equipment."@en ;
+          bamm:properties ( :parentProcessCategoryId
+                            :processCategoryId
+                            :processCategoryName
+                            :processCategoryDescription ) .
+
+:processCategoryId a bamm:Property ;
+            bamm:name "processCategoryId" ;
+            bamm:description "The identification of a process category."@en ;
+            bamm:characteristic :ProcessCategoryId .
+
+:ProcessCategoryId a bamm-c:Trait ;
+            bamm:name "ProcessCategoryId" ;
+            bamm-c:baseCharacteristic dcv:StringCode ;
+            bamm-c:constraint [
+                  a bamm-c:RegularExpressionConstraint ;
+                  bamm:name  "BEOProcessCategoryIdPattern" ;
+                  bamm:value "[0-9]\\.[0-9][0-9]\\.[0-9][0-9]\\.[0-9][0-9]"
+              ] .
+
+:parentProcessCategoryId a bamm:Property ;
+                   bamm:name "parentProcessCategoryId" ;
+                   bamm:description "The identification of the parent process category."@en ;
+                   bamm:characteristic :ProcessCategoryId .
+
+:processCategoryName a bamm:Property ;
+              bamm:name "processCategoryName" ;
+              bamm:description "The name of a process category."@en ;
+              bamm:characteristic bamm-c:MultiLanguageText .
+
+:processCategoryDescription a bamm:Property ;
+                     bamm:name "processCategoryDescription" ;
+                     bamm:description "Textual description of a process category."@en ;
+                     bamm:characteristic bamm-c:MultiLanguageText .
