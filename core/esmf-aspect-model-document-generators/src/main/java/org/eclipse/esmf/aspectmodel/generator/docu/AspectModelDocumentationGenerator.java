@@ -158,6 +158,7 @@ public class AspectModelDocumentationGenerator extends AbstractGenerator {
 
    private void generateHtmlDocu( final Function<String, OutputStream> nameMapper, final Format format, final Locale desiredLanguage ) {
       final Set<Locale> languagesInModel = LanguageCollector.collectUsedLanguages( context.aspect() );
+      System.out.println("Language inspection: " + desiredLanguage.getDisplayLanguage() + " :: " + languagesInModel.stream().findFirst().get().toString());
       if ( !languagesInModel.contains( desiredLanguage ) ) {
          throw new RuntimeException( String.format( "The model does not contain the desired language: %s.", desiredLanguage.toString() ) );
       }
@@ -188,10 +189,17 @@ public class AspectModelDocumentationGenerator extends AbstractGenerator {
                   DOCU_TEMPLATE_ROOT_DIR + "/html/property-documentation-lib.vm," +
                   DOCU_TEMPLATE_ROOT_DIR + "/html/common-documentation-lib.vm" );
 
+      engineConfiguration.put( "TestEVG", "Test Yauheni DOCS 20.06.2023");
+
       final Predicate<Locale> byLanguage = locale -> selectedLanguage == null || locale.getLanguage().equals( selectedLanguage.getLanguage() );
+
+      System.out.println(":: -> " + languages.size() + " :::: " + context.aspect() + " ::: \n");
+
       languages.stream().filter( byLanguage ).forEach( language -> {
 
          logMissingTranslations( context.aspect(), language );
+
+         System.out.println(" ------------- ");
 
          configuration.put( "i18n", new I18nLanguageBundle( language ) );
          configuration.put( "Scalar", Scalar.class );

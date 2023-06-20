@@ -34,6 +34,7 @@ public class DefaultPropertyWrapper extends DefaultProperty {
 
    @Override
    public Optional<ScalarValue> getExampleValue() {
+      System.out.println("Get Example Value: " + property.getExampleValue());
       return property.getExampleValue();
    }
 

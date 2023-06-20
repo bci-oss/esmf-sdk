@@ -46,6 +46,8 @@ public class TemplateEngine implements UnaryOperator<String> {
       engine.setProperty( "classpath.resource.loader.class", ClasspathResourceLoader.class.getName() );
       engine.setProperties( engineConfiguration );
       engine.init();
+
+      System.out.println("TEST Velocity Engine: " + engine.getProperty("TestEVG"));
    }
 
    private TemplateEngine( final VelocityEngine engine, final Map<String, Object> context ) {

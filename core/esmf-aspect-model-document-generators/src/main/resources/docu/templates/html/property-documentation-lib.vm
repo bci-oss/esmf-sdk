@@ -11,8 +11,16 @@
  ~ SPDX-License-Identifier: MPL-2.0
  *#
 
-#macro( property $property $parentElement $aspectModelHelper $i18n $weight )
+#macro( property $property $parentElement $aspectModelHelper $i18n $weight $TestEVG )
 <div class="flex flex-col pb-10">
+
+    <div>$TestEVG</div>
+    #if( $property.getExampleValue() )
+        <div class="flex border-b pb-1 py-4">
+            <div class="w-80">$i18n.getText( "docu.label.example" )</div>
+            <div class="w-full">$property.getExampleValue()</div>
+        </div>
+    #end
 
     #paragraph( $property.getPreferredName( $i18n.getLocale() ) "${aspectModelHelper.buildAnchor( $property, $parentElement, 'property' )}" $weight )
 

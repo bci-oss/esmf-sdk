@@ -26,6 +26,7 @@ public class I18nLanguageBundle {
 
    public I18nLanguageBundle( final Locale locale ) {
       this.locale = locale;
+      System.out.println("Bundle PATH test: " + LANGUAGE_BUNDLE + " ::: locale: " + locale + " :: ");
       this.resourceBundle = ResourceBundle.getBundle( LANGUAGE_BUNDLE, locale );
    }
 
