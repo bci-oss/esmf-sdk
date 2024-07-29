@@ -44,18 +44,8 @@ public class DefaultNamespace implements Namespace {
     * @param elements the list of elements in the namspace
     */
    public DefaultNamespace( final String uri, final List<ModelElement> elements, final Optional<AspectModelFile> source ) {
-      this( uri.split( ":" )[2], VersionNumber.parse( uri.split( ":" )[3] ), elements, source );
+      this( uri.split( ":" )[2], VersionNumber.parse( uri.split( ":" )[3].replace( "#", "" ) ), elements, source );
    }
-
-   //   /**
-   //    * Accepts a namespace URI such as 'urn:samm:com.example:1.0.0'
-   //    *
-   //    * @param uri the namspace uri
-   //    * @return the model namespace
-   //    */
-   //   public static Namespace from( final String uri ) {
-   //      return from( uri, List.of(), Optional.empty() );
-   //   }
 
    @Override
    public String packagePart() {
